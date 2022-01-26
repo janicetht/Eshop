@@ -1,4 +1,8 @@
-body{
+*{
+	margin: 0;
+	padding: 0;
+}
+#banner{
 	background-image: url('images/pastel.jpg');
 	background-size: cover;
 	background-position: center;
@@ -7,7 +11,7 @@ body{
 .banner-text{
 	text-align: center;
 	color: Black;
-	padding-top: 30px;
+	padding-top: 90px;
 }
 .banner-text h1{
 	font-size: 70px;
@@ -15,13 +19,13 @@ body{
 .banner-text p{
 	font-size: 20px;
 	font-style: italic;
+	padding-top: 10px;
 }
 .banner-btn{
 	margin: 70px auto 0;
 }
 .banner-btn a{
 	width: 100px;
-	height:30px;
 	text-decoration:none;
 	display: inline-block;
 	margin: 0 15px;
@@ -47,5 +51,38 @@ body{
 .banner-btn a:hover{
 	color: #FFF;
 }
-
+#sideNav{
+	width: 140px;
+	height: 100vh;
+	position: fixed;
+	right: 0;
+	top: 0;
+	background: #FDC7F7;
+	z-index:2;
+}
+nav ul li{
+	list-style: none;
+	margin: 50px 20px;
+}
+nav ul li a{
+	text-decoration: none;
+	color: #fff;
+}
+#menuBtn{
+	width: 50px;
+	height: 50px;
+	background: #FDC7F7;
+	text-align: center;
+	position: fixed;
+	right: 30px;
+	top:20px;
+	border-radius: 3px;
+	z-index:3;
+	cursor: pointer;
+}
+#menuBtn img{
+	width: 13px;
+	margin-top: 5px;
+	margin-right: 0px;
+}
 .clear{clear:both}
