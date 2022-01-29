@@ -137,26 +137,23 @@ nav ul li a{
 	margin-right: 0px;
 }
 .product-detail{
-	margin-left: 20%;
-	margin-right:20%;
-	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	padding-top: 10px;
 }
-.product-detail th{
-	width:330px;
-	height: 20px;
-	text-align: left;
+.product-detail-child{
+	margin-left:auto;
+	margin-right:auto;
+	width:550px;
 }
-.product-detail tr{
-	border: 0px;
+.product-detail-child img{
+	width: 300px;
 }
-.product-detail td{
-	border: 0px;
+#title{
+	font-weight: bold;
 }
-.product-detail img{
-	width: 320px;
-}
-#detail-cart-btn-td{
-	vertical-align: bottom;
+#how-to-use{
+	font-weight: bold;
 }
 .detail-cart-btn{
 	text-align: center;
