@@ -8,33 +8,80 @@
 	background-position: center;
 	height: 100vh;
 }
-.navBar{
-	margin-left: 10px;
-	margin-top: 5px;
+#topNavBar ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	background-color: pink;
+	overflow: hidden;
+	top: 0;
+	width:100%;
+	position:fixed;
 }
-.navBar a{
-	padding-top: 10px;
+#topNavBar li{
+	display: inline;
+}
+#topNavBar img{
+	display: block;
 }
 #banner-pic{
-	width: 130;
+	width: 120;
+	margin-left:auto;
+	margin-right:auto;
+}
+.cart{
+	width:30px;
+	height:30px;
+	position: fixed;
+	left: 10px;
+	top:5px;
+	transition: width 0.4s;
+}
+.cart img{
+	width:30px;
+}
+.cart:hover{
+
+}
+#menuBtn{
+	width: 20px;
+	height: 20px;
+	background: pink;
+	text-align: center;
+	position: fixed;
+	right: 20px;
+	top:10px;
+	border-radius: 3px;
+	z-index:3;
+	cursor: pointer;
+}
+.navBar{
+	margin-left: 10px;
+	margin-top: 35px;
+	position:fixed;
+}
+.navBar a{
+	padding-top: 5px;
 }
 #banner h1{
 	margin-left: 10%;
 	margin-right: 10%;
-	padding-right: 130px;
+	padding-top:45px;
 }
 #banner p{
 	margin-left: 10%;
 	margin-right: 10%;
-	padding-right: 130px;
 }
 #banner ul.table{
 	height:460px;
 	margin:0;
-	padding-left: 10%;
-	padding-right: 15%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 15%;
+	padding-right: 10%;
 	list-style:none;
 	overflow:auto;
+	margin-top:65px;
 }
 #banner ul.table li{
 	width:300px;
@@ -42,7 +89,7 @@
 	float:left;
 	text-align: center;
 	font-size: 18;
-	border:1px solid #CCC
+	border:1px solid #CCC;
 }
 #banner ul.table li img{
 	padding-top: 15px;
@@ -66,7 +113,6 @@
 	margin: 50px auto 0;
 	margin-left: 10%;
 	margin-right: 10%;
-	padding-right: 130px;
 }
 .banner-btn a{
 	width: 100px;
@@ -102,40 +148,6 @@
 .cart-btn a:hover{
 	color: #FFF;
 }
-#sideNav{
-	width: 130px;
-	height: 100vh;
-	position: fixed;
-	right: 0;
-	top: 0;
-	background: #FDC7F7;
-	z-index:1;
-}
-nav ul li{
-	list-style: none;
-	margin: 50px 20px;
-}
-nav ul li a{
-	text-decoration: none;
-	color: #fff;
-}
-#menuBtn{
-	width: 50px;
-	height: 50px;
-	background: #FDC7F7;
-	text-align: center;
-	position: fixed;
-	right: 30px;
-	top:20px;
-	border-radius: 3px;
-	z-index:3;
-	cursor: pointer;
-}
-#menuBtn img{
-	width: 13px;
-	margin-top: 5px;
-	margin-right: 0px;
-}
 .product-detail{
 	display: flex;
 	align-items: center;
@@ -144,10 +156,12 @@ nav ul li a{
 .product-detail-child{
 	margin-left:auto;
 	margin-right:auto;
-	width:550px;
+	width:430px;
+	margin-top:70px;
 }
 .product-detail-child img{
-	width: 300px;
+	width: 340px;
+	padding-bottom: 5px;
 }
 #title{
 	font-weight: bold;
@@ -160,10 +174,11 @@ nav ul li a{
 }
 .detail-cart-btn a{
 	width: 100px;
-	height: 25px;
-	padding-top: 5px;
+	height: 23px;
+	padding-top: 4px;
 	text-decoration:none;
 	display: inline-block;
+	background-color: pink;
 	color: #000;
 	border: .5px solid #000;
 	positive: relative;
