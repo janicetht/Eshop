@@ -1,3 +1,22 @@
+<?php
+require __DIR__.'/admin/lib/db.inc.php';
+$res = ierg4210_prod_fetchall();
+
+$catid = (int)$_GET['CATID'];
+
+$products = '';
+
+foreach ($res as $value){
+	if ((int)$value["CATID"] == $catid) { 
+	$products .= '<li><a href="ProductPage.php?PID='.$value["PID"].'"><img src="/admin/lib/images/'.$value["PID"].'.jpg"/></a>
+		<br><a href="ProductPage.php?PID='.$value["PID"].'">'.$value["NAME"].'</a><br>HKD'.$value["PRICE"].'<br>
+		<div class="cart-btn"><a href="#">Add to Cart</a></div></li>';
+	}
+}
+
+$products .= '</ul>';
+?>
+
 <html>
 <head>
 	<title>Janice Beauty Online Shop</title>
@@ -12,7 +31,7 @@
 						<img src="images/cart.ico"/>
 					</div>
 				</li>
-	  		<li><a href="HomePage.html"><img id="banner-pic" src="images/logo.png"/></a></li>
+	  		<li><a href="HomePage.php"><img id="banner-pic" src="images/logo.png"/></a></li>
 				<li><img id=menuBtn src="images/menu.png"></li>
 			</ul>
 		</nav>
@@ -20,7 +39,7 @@
   <section id="banner">
     <div class="navBar">
 			<br/>
-      <a href="HomePage.html">Home</a><a> > Main Page</a>
+      <a href="HomePage.php">Home</a><a> > Main Page</a>
 			<div class="shopping-list">Shopping List
 				<span class="shopping-list-content">
 					<ul class="shopping-list-table">
@@ -33,37 +52,7 @@
     </div>
     <br>
     <ul id="Product" class="table">
-    <li><a href="ProductPage.html"><img src="images/cushion.jpg"/></a>
-      <br><a href="ProductPage.html">Cushion Foundation</a><br>HKD140<br>
-      <div class="cart-btn">
-      <a href="#">Add to Cart</a>
-      </div>
-    </li>
-    <li><a href="ProductPage.html"><img src="images/eye_shadow.jpg"/></a>
-      <br><a href="ProductPage.html">Eye Shadow Palete</a><br>HKD120<br>
-      <div class="cart-btn">
-      <a href="#">Add to Cart</a>
-      </div>
-    </li>
-    <li><a href="ProductPage.html"><img src="images/blush.jpg"/></a>
-      <br><a href="ProductPage.html">Blush</a><br>HKD70<br>
-      <div class="cart-btn">
-      <a href="#">Add to Cart</a>
-      </div>
-    </li>
-    <li><a href="ProductPage.html"><img src="images/lipstick.jpg"/></a>
-      <br><a href="ProductPage.html">Lipstick</a><br>HKD70<br>
-      <div class="cart-btn">
-      <a href="#">Add to Cart</a>
-      </div>
-    </li>
-    <li><a href="ProductPage.html"><img src="images/brow.jpg"/></a>
-      <br><a href="ProductPage.html">Brow</a><br>HKD60<br>
-      <div class="cart-btn">
-      <a href="#">Add to Cart</a>
-      </div>
-    </li>
-    </ul>
+    <?php print $products;?>
 
   </section>
 
