@@ -105,8 +105,7 @@ function ierg4210_cat_insert()
     $sql="INSERT INTO CATEGORIES (NAME) VALUES ('$name');";
     $q = $db->prepare($sql);
 	$q->execute();
-	header('Content-Type: text/html; charset=utf-8');
-    echo 'Inserted. <br/><a href="../admin.php">Back to admin panel.</a>';
+	header('Location: admin.php');
     exit();
 }
 function ierg4210_cat_edit()
@@ -181,7 +180,7 @@ function ierg4210_prod_edit()
 {
 	global $db;
     $db = ierg4210_DB();
-	$pid = $_POST['pid'];
+	$pid = (int)$_POST['pid'];
 	$catid = $_POST['catid'];
 	$name = $_POST['name'];
 	$price = $_POST['price'];
@@ -207,15 +206,14 @@ function ierg4210_prod_edit()
     if ($_FILES["file"]["error"] == 0
         && $_FILES["file"]["type"] == "image/jpeg"
         && mime_content_type($_FILES["file"]["tmp_name"]) == "image/jpeg"
-        && $_FILES["file"]["size"] < 5000000) {
+        && $_FILES["file"]["size"] < 5000000){
 
         $sql="UPDATE PRODUCTS SET CATID = ('$catid'), NAME = ('$name'), PRICE = ('$price'), DESCRIPTION = ('$desc'), COUNTRY = ('$country'), INVENTORY = ('$inventory')WHERE PID = ('$pid');";
         $q = $db->prepare($sql);
         $q->execute();
-        $lastId = $db->lastInsertId();
 
         // Note: Take care of the permission of destination folder (hints: current user is apache)
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/admin/lib/images/" . $lastId . ".jpg")) {
+        if (move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/html/admin/lib/images/" . $pid . ".jpg")) {
             // redirect back to original page; you may comment it during debug
             header('Location: admin.php');
             exit();
