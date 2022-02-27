@@ -10,6 +10,9 @@ th, td{
 	padding-right: 5px;
 	word-wrap: break-word;
 }
+img {
+	width: 50px;
+}
 </style>
 
 <?php
@@ -62,6 +65,7 @@ foreach ($prodRes as $value){
 		<th>Description</th>
 		<th>Country of Origin</th>
 		<th>Inventory</th>
+		<th>Pic</th>
 	<tr>
 	<?php 
 	foreach ($prodRes as $value){
@@ -73,6 +77,7 @@ foreach ($prodRes as $value){
 		print "<td>".$value['DESCRIPTION']."</td>";
 		print "<td>".$value['COUNTRY']."</td>";
 		print "<td>".$value['INVENTORY']."</td>";
+		print "<td><img src='/admin/lib/images/".$value['PID'].".jpg'/></td>";
         print "</tr>";
 	}
 	?>
@@ -92,7 +97,7 @@ foreach ($prodRes as $value){
             <label for="prod_price"> Price *</label>
             <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
             <label for="prod_desc"> Description *</label>
-            <div> <input id="prod_desc" type="text" name="description"/> </div>
+            <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40"> </textarea> </div>
 			<label for="prod_desc"> Country of Origin *</label>
             <div> <input id="prod_country" type="text" name="country"/> </div>
 			<label for="prod_desc"> Inventory *</label>
@@ -115,7 +120,7 @@ foreach ($prodRes as $value){
             <label for="prod_price"> New Price *</label>
             <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$" /></div>
             <label for="prod_desc"> New Description *</label>
-            <div> <input id="prod_desc" type="text" name="description" /> </div>
+            <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40"> </textarea> </div>
 			<label for="prod_desc"> New Country of Origin *</label>
             <div> <input id="prod_country" type="text" name="country"/> </div>
 			<label for="prod_desc"> New Inventory *</label>

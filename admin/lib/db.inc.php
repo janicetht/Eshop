@@ -116,12 +116,13 @@ function ierg4210_cat_edit()
 	$catid = $_POST['catid'];
 	$name = $_POST['name'];
 	
-    if (!preg_match('/^[\w\- ]+$/', $name))
+    if (!preg_match('/^[\w\ ]+$/', $name))
         throw new Exception("invalid-name");
 
     $sql="UPDATE CATEGORIES SET NAME = ('$name') WHERE CATID = ('$catid');";
     $q = $db->prepare($sql);
 	$q->execute();
+	header('Location: admin.php');
     exit();
 }
 function ierg4210_cat_delete()
@@ -130,11 +131,14 @@ function ierg4210_cat_delete()
     $db = ierg4210_DB();
 	$catid = $_POST['catid'];
 	
+	$sql="DELETE FROM PRODUCTS WHERE CATID = ('$catid');";
+    $q = $db->prepare($sql);
+	$q->execute();
+	
     $sql="DELETE FROM CATEGORIES WHERE CATID = ('$catid');";
     $q = $db->prepare($sql);
 	$q->execute();
-    // Only an invalid file will result in the execution below
-    // To replace the content-type header which was json and output an error message
+	
     header('Location: admin.php');
     exit();
 }
@@ -160,7 +164,7 @@ function ierg4210_prod_fetchAll()
     if ($q->execute())
         return $q->fetchAll();
 }
-function ierg4210_prod_fetchOne()
+/*function ierg4210_prod_fetchOne()
 {
 	global $db;
     $db = ierg4210_DB();
@@ -172,8 +176,8 @@ function ierg4210_prod_fetchOne()
 
     if ($q->execute())
         return $q->fetchAll();
-}
-/*function ierg4210_prod_edit()
+}*/
+function ierg4210_prod_edit()
 {
 	global $db;
     $db = ierg4210_DB();
@@ -189,12 +193,12 @@ function ierg4210_prod_fetchOne()
     if (!preg_match('/^\d*$/', $catid))
         throw new Exception("invalid-catid");
     $catid = (int) $_POST['catid'];
-    if (!preg_match('/^[\w\- ]+$/', $name))
+    if (!preg_match('/^[\w\ ]+$/', $name))
         throw new Exception("invalid-name");
     if (!preg_match('/^[\d\.]+$/', $price))
         throw new Exception("invalid-price");
-    if (!preg_match('/^[\w\- ]+$/', $description))
-        throw new Exception("invalid-textt");
+    //if (!preg_match('/^[\w\- ]+$/', $description))
+    //    throw new Exception("invalid-textt");
 
     $sql="UPDATE PRODUCTS SET CATID = ('$catid'), NAME = ('$name'), PRICE = ('$price'), DESCRIPTION = ('$desc'), COUNTRY = ('$country'), INVENTORY = ('$inventory') WHERE PID = ('$pid');";
     $q = $db->prepare($sql);
@@ -222,7 +226,7 @@ function ierg4210_prod_fetchOne()
     header('Content-Type: text/html; charset=utf-8');
     echo 'Invalid file detected. <br/><a href="javascript:history.back();">Back to admin panel.</a>';
     exit();
-}*/
+}
 function ierg4210_prod_delete()
 {
 	global $db;
