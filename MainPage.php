@@ -24,7 +24,6 @@ $products .= '</ul>';
 	<title>Janice Beauty Online Shop</title>
 	<script src="admin/js/jquery.min.js"></script>
 	<link rel="stylesheet" href="style.css">
-	<script src="admin/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div id="topNavBar">
@@ -72,11 +71,49 @@ $products .= '</ul>';
 </body>
 </html>
 
-<script>  
+<script> 
+function load_cart_data_()
+{
+	$.ajax({
+		url:"fetch_cart.php",
+		method:"POST",
+		dataType:"json",
+		success:function(data)
+		{
+			$('#cart_details').html(data.cart_details);
+			//$('.total_price').text(data.total_price);
+			//$('.badge').text(data.total_item);
+		}
+	});
+} 
+function quantityChange(pid)
+{
+	var pid = pid;
+	var quantity = $('#input_quantity'+pid).val();
+	var action = "changeQuantity";
+	if(quantity > 0)
+	{
+		$.ajax({
+			url:"action.php",
+			method:"POST",
+			data:{pid:pid, quantity:quantity, action:action},
+			success:function(data)
+			{
+				load_cart_data_();
+				//alert("Item has been Added into Cart");
+			}
+		});
+	}
+	else
+	{
+		alert("Quantity has to be >0");
+	}
+}
+
 $(document).ready(function(){
 
 	load_cart_data();
-    
+
 	function load_cart_data()
 	{
 		$.ajax({
@@ -91,7 +128,7 @@ $(document).ready(function(){
 			}
 		});
 	}
-
+	
 	$(document).on('click', '.add_to_cart', function(){
 		var pid = $(this).attr("id");
 		var name = $('#name'+pid+'').val();
@@ -107,7 +144,7 @@ $(document).ready(function(){
 				success:function(data)
 				{
 					load_cart_data();
-					alert("Item has been Added into Cart");
+					//alert("Item has been Added into Cart");
 				}
 			});
 		}
@@ -126,8 +163,6 @@ $(document).ready(function(){
 				success:function()
 				{
 					load_cart_data();
-					//$('#cart-popover').popover('hide');
-					alert("Item has been removed from Cart");
 				}
 			})
 		}
@@ -146,12 +181,12 @@ $(document).ready(function(){
 			success:function()
 			{
 				load_cart_data();
-				//$('#cart-popover').popover('hide');
 				alert("Your Cart has been clear");
 			}
 		});
 	});
     
+	
 });
 
 </script>
