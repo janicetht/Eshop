@@ -63,21 +63,32 @@ foreach ($prodRes as $value){
 			</div>
     </div>
     <div class="product-detail">
-		<div class="product-detail-child">
-        <p id="title"><?php print $name;?></p>
-        <p><img src="/admin/lib/images/<?php print $pid;?>.jpg"/><div class="detail-cart-btn">
-        <a href="#">Add to Cart</a>
-		</div></p>
-        <p id="detail-cart-btn-td"></p>
-        <p>Made in <?php print $country;?></p>
-        <p>HKD<?php print $price;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inventory:<?php print $inventory;?></p>
-        <p id="how-to-use">How To Use</p>
-        <p><?php print $desc;?></p>
+		<div class="product-detail-image">
+			<p><img src="/admin/lib/images/<?php print $pid;?>.jpg"/></p>
 		</div>
+		
+		<div class="product-detail-description">
+			<p id="title"><?php print $name;?></p>
+			<p id="detail-cart-btn-td"></p>
+			</br>
+			<p>Made in <?php print $country;?></p>
+			</br>
+			<p>HKD<?php print $price;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inventory:<?php print $inventory;?></p>
+			</br>
+			<div class="detail-cart-btn">
+				<input type="button" name="add_to_cart" id="<?php print $pid;?>" class="btn btn-success form-control add_to_cart" value="Add to Cart" />
+			</div>
+			</br>
+			<p id="how-to-use">How To Use</p>
+			</br>
+			<p><?php print $desc;?></p>
+			<input type="hidden" name="hidden_quantity" id="quantity<?php print $pid;?>" class="form-control" value="1" />
+			<input type="hidden" name="hidden_name" id="name<?php print $pid;?>" value="<?php print $name;?>" />
+			<input type="hidden" name="hidden_price" id="price<?php print $pid;?>" value="<?php print $price;?>" />
+		</div>		
     </div>
 
   </section>
-
 
 </body>
 </html>

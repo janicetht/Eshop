@@ -24,8 +24,7 @@ foreach ($res as $value){
 }
 
 $data = array(
-	'Product'	=>	$products,
-	'SQL'		=>	"SELECT * FROM PRODUCTS WHERE CATID = ('$catid') ORDER BY CATID ASC LIMIT ($itemPerPage) OFFSET ($offset);"
+	'Product'	=>	$products
 );
 
 echo json_encode($data);

@@ -67,6 +67,8 @@ table, td, th {
 	position:fixed;
 	left:0;
 	width: 300px;
+	z-index: 30;
+	
 }
 .navBar a{
 	padding-top: 5px;
@@ -160,16 +162,20 @@ table, td, th {
 	display: flex;
 	align-items: center;
 	padding-top: 10px;
+	justify-content: center;
 }
-.product-detail-child{
-	margin-left:auto;
-	margin-right:auto;
-	width:550px;
+.product-detail-image{
+	width:350px;
 	margin-top:70px;
+	position: relative;
 }
-.product-detail-child img{
-	width: 320px;
+.product-detail-image img{
+	width: 330px;
 	padding-bottom: 5px;
+}
+.product-detail-description {
+	width: 360px;
+	position: relative;
 }
 #title{
 	font-weight: bold;
@@ -178,33 +184,22 @@ table, td, th {
 	font-weight: bold;
 }
 .detail-cart-btn{
-	text-align: center;
+	display: flex;
+	margin-left: 37px;
 }
-.detail-cart-btn a{
-	width: 100px;
-	height: 23px;
-	padding-top: 4px;
-	text-decoration:none;
+.product_page_add_to_cart_btn {
 	display: inline-block;
-	background-color: pink;
-	color: #000;
-	border: .5px solid #000;
-	positive: relative;
-	z-index: 1;
-	transition: color 0.1s;
-}
-.detail-cart-btn a:hover{
-	color: #FFF;
 }
 .shopping-list{
 	position: fixed;
 	display: inline-block;
 	right:10;
 	width: 100px;
+	z-index: 30;
 }
 .shopping-list .shoppingListContent{
 	visibility: hidden;
-	width:550px;
+	width:600px;
 	height:auto;
 	background-color: white;
 	color: black;
@@ -215,7 +210,7 @@ table, td, th {
 	right:10%;
 
 	position: absolute;
-	z-index: 1;
+	z-index: 30;
 }
 .shopping-list:hover .shoppingListContent{
 	visibility: visible;
