@@ -163,19 +163,20 @@ function ierg4210_prod_fetchAll()
     if ($q->execute())
         return $q->fetchAll();
 }
-/*function ierg4210_prod_fetchOne()
+function ierg4210_prod_fetchByPage($catid, $pageNum) 
 {
 	global $db;
-    $db = ierg4210_DB();
-	$pid = $_POST['pid'];
-	#header('Content-Type: text/html; charset=utf-8');
-    #echo ''$pid'. <br/><a href="javascript:history.back();">Back to admin panel.</a>';
-	$sql="SELECT * FROM PRODUCTS WHERE PID = ('$pid');";
-    $q = $db->prepare($sql);
-
-    if ($q->execute())
-        return $q->fetchAll();
-}*/
+	$db = ierg4210_DB();
+  
+	$itemPerPage = 6;
+	
+	$offset = $itemPerPage *  ($pageNum - 1);
+	
+	$sql="SELECT * FROM PRODUCTS WHERE CATID = ('$catid') ORDER BY PID ASC LIMIT ($itemPerPage) OFFSET ($offset);";
+	$q = $db->prepare($sql);
+	if($q->execute())
+		return $q->fetchAll();
+}
 function ierg4210_prod_edit()
 {
 	global $db;

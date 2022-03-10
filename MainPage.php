@@ -1,24 +1,3 @@
-<?php
-require __DIR__.'/admin/lib/db.inc.php';
-$res = ierg4210_prod_fetchall();
-
-$catid = (int)$_GET['CATID'];
-
-$products = '';
-
-foreach ($res as $value){
-	if ((int)$value["CATID"] == $catid) { 
-	$products .= '<li><a href="ProductPage.php?PID='.$value["PID"].'"><img src="/admin/lib/images/'.$value["PID"].'.jpg"/></a>
-		<br><a href="ProductPage.php?PID='.$value["PID"].'">'.$value["NAME"].'</a><br>HKD'.$value["PRICE"].'<br>
-		<input type="hidden" name="hidden_quantity" id="quantity' . $value["PID"] .'" class="form-control" value="1" />
-		<input type="button" name="add_to_cart" id="'.$value["PID"].'" style="margin-top:5px;" class="btn btn-success form-control add_to_cart" value="Add to Cart" />
-		<input type="hidden" name="hidden_name" id="name'.$value["PID"].'" value="'.$value["NAME"].'" />
-		<input type="hidden" name="hidden_price" id="price'.$value["PID"].'" value="'.$value["PRICE"].'" /></li>';
-	}
-}
-$products .= '</ul>';
-?>
-
 <html>
 <head>
 	<title>Janice Beauty Online Shop</title>
@@ -64,129 +43,12 @@ $products .= '</ul>';
     </div>
     <br>
 	<ul id="Product" class="table">
-    <?php print $products;?>
+	</ul>
 
   </section>
 
 </body>
 </html>
 
-<script> 
-function load_cart_data_()
-{
-	$.ajax({
-		url:"fetch_cart.php",
-		method:"POST",
-		dataType:"json",
-		success:function(data)
-		{
-			$('#cart_details').html(data.cart_details);
-			//$('.total_price').text(data.total_price);
-			//$('.badge').text(data.total_item);
-		}
-	});
-} 
-function quantityChange(pid)
-{
-	var pid = pid;
-	var quantity = $('#input_quantity'+pid).val();
-	var action = "changeQuantity";
-	if(quantity > 0)
-	{
-		$.ajax({
-			url:"action.php",
-			method:"POST",
-			data:{pid:pid, quantity:quantity, action:action},
-			success:function(data)
-			{
-				load_cart_data_();
-				//alert("Item has been Added into Cart");
-			}
-		});
-	}
-	else
-	{
-		alert("Quantity has to be >0");
-	}
-}
-
-$(document).ready(function(){
-
-	load_cart_data();
-
-	function load_cart_data()
-	{
-		$.ajax({
-			url:"fetch_cart.php",
-			method:"POST",
-			dataType:"json",
-			success:function(data)
-			{
-				$('#cart_details').html(data.cart_details);
-				//$('.total_price').text(data.total_price);
-				//$('.badge').text(data.total_item);
-			}
-		});
-	}
-	
-	$(document).on('click', '.add_to_cart', function(){
-		var pid = $(this).attr("id");
-		var name = $('#name'+pid+'').val();
-		var price = $('#price'+pid+'').val();
-		var quantity = $('#quantity'+pid).val();
-		var action = "add";
-		if(quantity > 0)
-		{
-			$.ajax({
-				url:"action.php",
-				method:"POST",
-				data:{pid:pid, name:name, price:price, quantity:quantity, action:action},
-				success:function(data)
-				{
-					load_cart_data();
-					//alert("Item has been Added into Cart");
-				}
-			});
-		}
-
-	});
-
-	$(document).on('click', '.delete', function(){
-		var pid = $(this).attr("id");
-		var action = 'remove';
-		if(confirm("Are you sure you want to remove this product?"))
-		{
-			$.ajax({
-				url:"action.php",
-				method:"POST",
-				data:{pid:pid, action:action},
-				success:function()
-				{
-					load_cart_data();
-				}
-			})
-		}
-		else
-		{
-			return false;
-		}
-	});
-
-	$(document).on('click', '#clear_cart', function(){
-		var action = 'empty';
-		$.ajax({
-			url:"action.php",
-			method:"POST",
-			data:{action:action},
-			success:function()
-			{
-				load_cart_data();
-				alert("Your Cart has been clear");
-			}
-		});
-	});
-    
-	
-});
-
-</script>
+<script src="cart.js"></script>
+<script src="scroll.js"></script>
