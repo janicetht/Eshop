@@ -70,12 +70,12 @@ function ierg4210_prod_insert() {
 
         $sql="INSERT INTO PRODUCTS (CATID, NAME, PRICE, DESCRIPTION, COUNTRY, INVENTORY) VALUES (?, ?, ?, ?, ?, ?);";
         $q = $db->prepare($sql);
-        $q->bindParam(1, $catid);
-        $q->bindParam(2, $name);
-        $q->bindParam(3, $price);
-        $q->bindParam(4, $desc);
-		$q->bindParam(5, $country);
-		$q->bindParam(6, $inventory);
+        $q->bindParam(1, $catid, PDO::PARAM_INT);
+        $q->bindParam(2, $name, PDO::PARAM_STR);
+        $q->bindParam(3, $price, PDO::PARAM_STR);
+        $q->bindParam(4, $desc, PDO::PARAM_STR);
+		$q->bindParam(5, $country, PDO::PARAM_STR);
+		$q->bindParam(6, $inventory, PDO::PARAM_INT);
         $q->execute();
         $lastId = $db->lastInsertId();
         // Note: Take care of the permission of destination folder (hints: current user is apache)
@@ -102,8 +102,9 @@ function ierg4210_cat_insert()
     if (!preg_match('/^[\w\- ]+$/', $name))
         throw new Exception("invalid-name");
 
-    $sql="INSERT INTO CATEGORIES (NAME) VALUES ('$name');";
+    $sql="INSERT INTO CATEGORIES (NAME) VALUES (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $name, PDO::PARAM_STR);
 	$q->execute();
 	header('Location: admin.php');
     exit();
@@ -118,8 +119,10 @@ function ierg4210_cat_edit()
     if (!preg_match('/^[\w\ ]+$/', $name))
         throw new Exception("invalid-name");
 
-    $sql="UPDATE CATEGORIES SET NAME = ('$name') WHERE CATID = ('$catid');";
+    $sql="UPDATE CATEGORIES SET NAME = (?) WHERE CATID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $name, PDO::PARAM_STR);
+	$q->bindParam(2, $catid, PDO::PARAM_INT);
 	$q->execute();
 	header('Location: admin.php');
     exit();
@@ -130,12 +133,14 @@ function ierg4210_cat_delete()
     $db = ierg4210_DB();
 	$catid = $_POST['catid'];
 	
-	$sql="DELETE FROM PRODUCTS WHERE CATID = ('$catid');";
+	$sql="DELETE FROM PRODUCTS WHERE CATID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $catid, PDO::PARAM_INT);
 	$q->execute();
 	
-    $sql="DELETE FROM CATEGORIES WHERE CATID = ('$catid');";
+    $sql="DELETE FROM CATEGORIES WHERE CATID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $catid, PDO::PARAM_INT);
 	$q->execute();
 	
     header('Location: admin.php');
@@ -147,8 +152,9 @@ function ierg4210_prod_delete_by_catid()
     $db = ierg4210_DB();
 	$catid = $_POST['catid'];
 
-    $sql="DELETE FROM PRODUCTS WHERE CATID = ('$catid');";
+    $sql="DELETE FROM PRODUCTS WHERE CATID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $catid, PDO::PARAM_INT);
 	$q->execute();
 	header('Location: admin.php');
     exit();
@@ -172,8 +178,11 @@ function ierg4210_prod_fetchByPage($catid, $pageNum)
 	
 	$offset = $itemPerPage *  ($pageNum - 1);
 	
-	$sql="SELECT * FROM PRODUCTS WHERE CATID = ('$catid') ORDER BY PID ASC LIMIT ($itemPerPage) OFFSET ($offset);";
+	$sql="SELECT * FROM PRODUCTS WHERE CATID = (?) ORDER BY PID ASC LIMIT (?) OFFSET (?);";
 	$q = $db->prepare($sql);
+	$q->bindParam(1, $catid, PDO::PARAM_INT);
+	$q->bindParam(2, $itemPerPage, PDO::PARAM_INT);
+	$q->bindParam(3, $offset, PDO::PARAM_INT);
 	if($q->execute())
 		return $q->fetchAll();
 }
@@ -200,8 +209,15 @@ function ierg4210_prod_edit()
     //if (!preg_match('/^[\w\- ]+$/', $description))
     //    throw new Exception("invalid-textt");
 
-    $sql="UPDATE PRODUCTS SET CATID = ('$catid'), NAME = ('$name'), PRICE = ('$price'), DESCRIPTION = ('$desc'), COUNTRY = ('$country'), INVENTORY = ('$inventory') WHERE PID = ('$pid');";
+    $sql="UPDATE PRODUCTS SET CATID = (?), NAME = (?), PRICE = (?), DESCRIPTION = (?), COUNTRY = (?), INVENTORY = (?) WHERE PID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $catid, PDO::PARAM_INT);
+	$q->bindParam(2, $name, PDO::PARAM_STR);
+	$q->bindParam(3, $price, PDO::PARAM_STR);
+    $q->bindParam(4, $desc, PDO::PARAM_STR);
+	$q->bindParam(5, $country, PDO::PARAM_STR);
+	$q->bindParam(6, $inventory, PDO::PARAM_INT);
+	$q->bindParam(7, $pid, PDO::PARAM_INT);
 
     // Copy the uploaded file to a folder which can be publicly accessible at incl/img/[pid].jpg
     if ($_FILES["file"]["error"] == 0
@@ -209,8 +225,15 @@ function ierg4210_prod_edit()
         && mime_content_type($_FILES["file"]["tmp_name"]) == "image/jpeg"
         && $_FILES["file"]["size"] < 5000000){
 
-        $sql="UPDATE PRODUCTS SET CATID = ('$catid'), NAME = ('$name'), PRICE = ('$price'), DESCRIPTION = ('$desc'), COUNTRY = ('$country'), INVENTORY = ('$inventory')WHERE PID = ('$pid');";
+        $sql="UPDATE PRODUCTS SET CATID = (?), NAME = (?), PRICE = (?), DESCRIPTION = (?), COUNTRY = (?), INVENTORY = (?) WHERE PID = (?);";
         $q = $db->prepare($sql);
+		$q->bindParam(1, $catid, PDO::PARAM_INT);
+		$q->bindParam(2, $name, PDO::PARAM_STR);
+		$q->bindParam(3, $price, PDO::PARAM_STR);
+		$q->bindParam(4, $desc, PDO::PARAM_STR);
+		$q->bindParam(5, $country, PDO::PARAM_STR);
+		$q->bindParam(6, $inventory, PDO::PARAM_INT);
+		$q->bindParam(7, $pid, PDO::PARAM_INT);
         $q->execute();
 
         // Note: Take care of the permission of destination folder (hints: current user is apache)
@@ -232,8 +255,9 @@ function ierg4210_prod_delete()
     $db = ierg4210_DB();
 	$pid = $_POST['pid'];
 
-    $sql="DELETE FROM PRODUCTS WHERE PID = ('$pid');";
+    $sql="DELETE FROM PRODUCTS WHERE PID = (?);";
     $q = $db->prepare($sql);
+	$q->bindParam(1, $pid, PDO::PARAM_INT);
 	$q->execute();
 	header('Location: admin.php');
     exit();
