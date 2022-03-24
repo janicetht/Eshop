@@ -26,7 +26,7 @@ if(!empty($_SESSION["shopping_cart"]))
 		$output .= '
 		<tr>
 			<td>'.$values["name"].'</td>
-			<td><input id="input_quantity'.$values["pid"].'" onchange="quantityChange('.$values["pid"].')" type="text" value="'.$values["quantity"].'"/></td>
+			<td><input type="number" id="input_quantity'.$values["pid"].'" onchange="quantityChange('.$values["pid"].')" type="text" value="'.$values["quantity"].'"/></td>
 			<td align="right">$ '.$values["price"].'</td>
 			<td align="right">$ '.number_format($values["quantity"] * $values["price"], 2).'</td>
 			<td><button name="delete" class="btn btn-danger btn-xs delete" id="'. $values["pid"].'">Remove</button></td>
