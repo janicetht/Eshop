@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors',1);
+
 function ierg4210_DB() {
 	// connect to the database
 	// TODO: change the following path if needed
@@ -44,6 +46,7 @@ function ierg4210_prod_insert() {
 	$inventory = $_POST['inventory'];
 	$lastId = '';
 	$return = '';
+	
     // TODO: complete the rest of the INSERT command
     if (!preg_match('/^\d*$/', $catid))
         throw new Exception("invalid-catid");
@@ -56,7 +59,7 @@ function ierg4210_prod_insert() {
     //    throw new Exception("invalid-textdesc");
 	if (!preg_match('/^[\w\- ]+$/', $country))
         throw new Exception("invalid-textcoun");
-	if (!preg_match('/^[\d\.]+$/', $inventory))
+	if (!preg_match('/^[\d\]+$/', $inventory))
         throw new Exception("invalid-inventory");
 	
     $sql="INSERT INTO PRODUCTS (CATID, NAME, PRICE, DESCRIPTION, COUNTRY, INVENTORY) VALUES (?, ?, ?, ?, ?, ?);";
@@ -116,6 +119,8 @@ function ierg4210_cat_edit()
 	$catid = $_POST['catid'];
 	$name = $_POST['name'];
 	
+	if (!preg_match('/^\d*$/', $catid))
+        throw new Exception("invalid-catid");
     if (!preg_match('/^[\w\ ]+$/', $name))
         throw new Exception("invalid-name");
 
@@ -132,6 +137,9 @@ function ierg4210_cat_delete()
 	global $db;
     $db = ierg4210_DB();
 	$catid = $_POST['catid'];
+	
+	if (!preg_match('/^\d*$/', $catid))
+        throw new Exception("invalid-catid");
 	
 	$sql="DELETE FROM PRODUCTS WHERE CATID = (?);";
     $q = $db->prepare($sql);
@@ -151,6 +159,9 @@ function ierg4210_prod_delete_by_catid()
 	global $db;
     $db = ierg4210_DB();
 	$catid = $_POST['catid'];
+	
+	if (!preg_match('/^\d*$/', $catid))
+        throw new Exception("invalid-catid");
 
     $sql="DELETE FROM PRODUCTS WHERE CATID = (?);";
     $q = $db->prepare($sql);
@@ -199,6 +210,8 @@ function ierg4210_prod_edit()
 	$inventory = $_POST['inventory'];
 	
     // TODO: complete the rest of the INSERT command
+	if (!preg_match('/^\d*$/', $pid))
+        throw new Exception("invalid-pid");
     if (!preg_match('/^\d*$/', $catid))
         throw new Exception("invalid-catid");
     $catid = (int) $_POST['catid'];
@@ -208,16 +221,13 @@ function ierg4210_prod_edit()
         throw new Exception("invalid-price");
     //if (!preg_match('/^[\w\- ]+$/', $description))
     //    throw new Exception("invalid-textt");
+	if (!preg_match('/^[\w\- ]+$/', $country))
+        throw new Exception("invalid-textcoun");
+	if (!preg_match('/^[\d\]+$/', $inventory))
+        throw new Exception("invalid-inventory");
 
     $sql="UPDATE PRODUCTS SET CATID = (?), NAME = (?), PRICE = (?), DESCRIPTION = (?), COUNTRY = (?), INVENTORY = (?) WHERE PID = (?);";
     $q = $db->prepare($sql);
-	$q->bindParam(1, $catid, PDO::PARAM_INT);
-	$q->bindParam(2, $name, PDO::PARAM_STR);
-	$q->bindParam(3, $price, PDO::PARAM_STR);
-    $q->bindParam(4, $desc, PDO::PARAM_STR);
-	$q->bindParam(5, $country, PDO::PARAM_STR);
-	$q->bindParam(6, $inventory, PDO::PARAM_INT);
-	$q->bindParam(7, $pid, PDO::PARAM_INT);
 
     // Copy the uploaded file to a folder which can be publicly accessible at incl/img/[pid].jpg
     if ($_FILES["file"]["error"] == 0
@@ -254,6 +264,9 @@ function ierg4210_prod_delete()
 	global $db;
     $db = ierg4210_DB();
 	$pid = $_POST['pid'];
+	
+	if (!preg_match('/^\d*$/', $pid))
+        throw new Exception("invalid-pid");
 
     $sql="DELETE FROM PRODUCTS WHERE PID = (?);";
     $q = $db->prepare($sql);
@@ -261,4 +274,97 @@ function ierg4210_prod_delete()
 	$q->execute();
 	header('Location: admin.php');
     exit();
+}
+function ierg4210_add_user() 
+{
+	global $db;
+    $db = ierg4210_DB();
+	
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$admin_flag = $_POST['admin_flag'];
+	
+	//if (!preg_match('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$', $email))
+    //    throw new Exception("invalid-email");
+	//if (!preg_match('(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}', $password))
+    //    throw new Exception("invalid-password");
+	
+	$salt = random_int(PHP_INT_MIN ,PHP_INT_MAX);
+	$hash_password = hash_hmac('sha256', $password, $salt);
+	//$hash_default_salt = password_hash($password, PASSWORD_DEFAULT);
+	
+	
+	$sql="INSERT INTO USERS (EMAIL, SALT, PASSWORD, ADMIN) VALUES (?,?,?,?);";
+    $q = $db->prepare($sql);
+	$q->bindParam(1, $email, PDO::PARAM_STR);
+	$q->bindParam(2, $salt, PDO::PARAM_INT);
+	$q->bindParam(3, $hash_password, PDO::PARAM_STR);
+	$q->bindParam(4, $admin_flag, PDO::PARAM_INT);
+	$q->execute();
+	header('Content-Type: text/html; charset=utf-8');
+    echo 'User Added. <br/><a href="javascript:history.back();">Go Back</a>';
+	exit();
+}
+function ierg4210_user_login() 
+{
+	global $db;
+    $db = ierg4210_DB();
+	
+	$login_success = 0;
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	
+	//if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6}$/", $email))
+    //    throw new Exception("invalid-email");
+	//if (!preg_match("/^[\w@#$%\^\&\*\-]+$/", $password))
+    //    throw new Exception("invalid-password");
+	
+    $sql="SELECT * FROM USERS WHERE EMAIL = ?;";
+    $q = $db->prepare($sql);
+	$q->bindParam(1, $email, PDO::PARAM_STR);
+	$q->execute();
+	$res = $q->fetch();
+	$saltedPassword = hash_hmac('sha256', $password, $res['SALT']);
+	
+	if ($saltedPassword == $res['PASSWORD']) 
+	{
+		/*$exp = time() + 3600 * 24 * 3; 		// 3days
+		$token = array(
+		'em'=>$res['EMAIL'],
+		'exp'=>$exp,
+		'k'=>hash_hmac('sha256', $exp.$res['PASSWORD'], $res['SALT'])
+		);
+		setcookie('s4210', json_encode($token), $exp, '', '', true, true);
+		$_SESSION['s4210'] = $token;
+		//return true;*/
+		$login_success = 1;
+	}
+
+	if ($login_success) {
+		if ($res['ADMIN'] == 1) {
+			$exp = time() + 3600 * 24 * 3; 		// 3days
+			$token = array(
+			'em'=>$res['EMAIL'],
+			'exp'=>$exp,
+			'k'=>hash_hmac('sha256', $exp.$res['PASSWORD'], $res['SALT'])
+			);
+			setcookie('s4210', json_encode($token), $exp, '', '', true, true);
+			$_SESSION['s4210'] = $token;
+			header('Location: admin/admin.php', true, 302);
+			exit();
+		} else if ($res['ADMIN'] == 0) {
+			header('Location: HomePage.php', true, 302);
+			exit();
+		}
+	} else {
+		throw new Exception('Wrong Credentials');
+	}
+}
+function ierg4210_user_logout()
+{
+	// clear the cookies and session
+	
+	// redirect to login page after logout
+	header('Location: login.php', true, 302);
+	exit();
 }
