@@ -1,72 +1,8 @@
-<style>
-    table {
-        border: 1px solid;
-        border-collapse: collapse;
-    }
-
-    th,
-    td {
-        border: 1px solid;
-        border-collapse: collapse;
-        padding-left: 5px;
-        padding-right: 5px;
-        word-wrap: break-word;
-    }
-
-    img {
-        width: 50px;
-    }
-
-	.edrop-zone {
-        max-width: 130px;
-        height: 130px;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 500;
-        font-size 20px;
-        cursor: pointer;
-        color: grey;
-        border: 4px dashed black;
-        border-radius: 10px;
-    }
-
-    .edrop-zone--over {
-        border-style: solid;
-    }
-
-    .edrop-zone__input {
-        display: none;
-    }
-
-    .edrop-zone__thumb {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        overflow: hidden;
-        background-color: #cccccc;
-        background-size: cover;
-        position: relative;
-    }
-
-    .edrop-zone__thumb::after {
-        content: attr(data-label);
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 5px 0;
-        color: white;
-        background: rgba(0, 0, 0, 0.75);
-        font-size: 14px;
-        text-align: center;
-    }
-</style>
-
 <?php
+ini_set('display_errors',1);
+
+include_once 'auth.php';
+
 require __DIR__ . '/lib/db.inc.php';
 $catRes = ierg4210_cat_fetchall();
 $prodRes = ierg4210_prod_fetchall();
@@ -84,7 +20,9 @@ foreach ($prodRes as $value) {
 
 <html>
 <header>
-    <h2> Admin Page </h2>
+	<title>Admin Page</title>
+	<link rel="stylesheet" href="admin_style.css">
+    <h3> Admin Page </h3>
 </header>
 
 <fieldset>
@@ -149,11 +87,11 @@ foreach ($prodRes as $value) {
         <label for="prod_price"> Price *</label>
         <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$" /></div>
         <label for="prod_desc"> Description *</label>
-        <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40"> </textarea> </div>
+        <div> <textarea id="prod_desc" type="text" name="description" required="required" rows="4" cols="40"> </textarea> </div>
         <label for="prod_desc"> Country of Origin *</label>
-        <div> <input id="prod_country" type="text" name="country" /> </div>
+        <div> <input id="prod_country" type="text" name="country" required="required" pattern="^[\w\]+$"/> </div>
         <label for="prod_desc"> Inventory *</label>
-        <div> <input id="prod_inventory" type="text" name="inventory" /> </div>
+        <div> <input id="prod_inventory" type="number" name="inventory" required="required"/> </div>
         <label for="prod_image"> Image * </label>
 
         <div class="edrop-zone">
@@ -245,9 +183,9 @@ foreach ($prodRes as $value) {
         <label for="prod_desc"> New Description *</label>
         <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40"> </textarea> </div>
         <label for="prod_desc"> New Country of Origin *</label>
-        <div> <input id="prod_country" type="text" name="country" /> </div>
+        <div> <input id="prod_country" type="text" name="country" required="required" pattern="^[\w\]+$"/> </div>
         <label for="prod_desc"> New Inventory *</label>
-        <div> <input id="prod_inventory" type="text" name="inventory" /> </div>
+        <div> <input id="prod_inventory" type="number" name="inventory" required="required"/> </div>
 		<label for="prod_desc"> New Image *</label>
 		<div class="edrop-zone">
             <span class="edrop-zone__prompt">Drop file here or click to upload</span>
@@ -299,6 +237,20 @@ foreach ($prodRes as $value) {
         <input type="submit" value="Submit" />
     </form>
 </fieldset>
+</br>
+<fieldset>
+    <legend> Add User</legend>
+    <form id="add_user" method="POST" action="admin-process.php?action=add_user" enctype="multipart/form-data">
+        <label for="username">Email *</label><br>
+		<input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br>
+		<label for="pwd">Password *</label><br>
+		<input type="password" id="password" name="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
+        <label for="admin_flag"> Admin *</label>
+        <input id="admin_flag" type="number" name="admin_flag" required="required" title="1 for admin, 0 for normal user"/>
+		<input type="submit" value="Submit" />
+    </form>
+</fieldset>
+
 
 </html>
 
