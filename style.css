@@ -106,6 +106,17 @@ table, td, th {
 	padding-bottom: 10px;
 	width: 220px;
 }
+.login-container{
+	display: flex;
+	align-items: center;
+	padding-top: 100px;
+	justify-content: center;
+}
+.login-text{
+	text-align: left;
+	color: Black;
+	
+}
 .banner-text{
 	text-align: center;
 	color: Black;

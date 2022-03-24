@@ -328,7 +328,8 @@ function ierg4210_user_login()
 	
 	if ($saltedPassword == $res['PASSWORD']) 
 	{
-		/*$exp = time() + 3600 * 24 * 3; 		// 3days
+		session_start();
+		$exp = time() + 3600 * 24 * 3; 		// 3days
 		$token = array(
 		'em'=>$res['EMAIL'],
 		'exp'=>$exp,
@@ -336,20 +337,12 @@ function ierg4210_user_login()
 		);
 		setcookie('s4210', json_encode($token), $exp, '', '', true, true);
 		$_SESSION['s4210'] = $token;
-		//return true;*/
+		//return true;
 		$login_success = 1;
 	}
 
 	if ($login_success) {
 		if ($res['ADMIN'] == 1) {
-			$exp = time() + 3600 * 24 * 3; 		// 3days
-			$token = array(
-			'em'=>$res['EMAIL'],
-			'exp'=>$exp,
-			'k'=>hash_hmac('sha256', $exp.$res['PASSWORD'], $res['SALT'])
-			);
-			setcookie('s4210', json_encode($token), $exp, '', '', true, true);
-			$_SESSION['s4210'] = $token;
 			header('Location: admin/admin.php', true, 302);
 			exit();
 		} else if ($res['ADMIN'] == 0) {
@@ -360,11 +353,26 @@ function ierg4210_user_login()
 		throw new Exception('Wrong Credentials');
 	}
 }
-function ierg4210_user_logout()
+function ierg4210_guest_login()
 {
+	session_start();
+	$exp = time() + 3600 * 24 * 3; 		// 3days
+	$token = array(
+	'em'=>'guest',
+	'exp'=>$exp,
+	);
+	setcookie('s4210', json_encode($token), $exp, '', '', true, true);
+	$_SESSION['s4210'] = $token;
+	header('Location: HomePage.php', true, 302);
+	exit();
+}
+function ierg4210_logout()
+{
+	session_start();
 	// clear the cookies and session
-	
+	setcookie('s4210', time() - 3600);
+	unset($_SESSION['s4210']);
 	// redirect to login page after logout
-	header('Location: login.php', true, 302);
+	header('Location: ../login.php', true, 302);
 	exit();
 }

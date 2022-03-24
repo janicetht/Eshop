@@ -1,5 +1,12 @@
 <?php
+include_once('auth.php');
 include_once('lib/db.inc.php');
+
+if($return = call_user_func('auth')) === false)
+{
+	header('Location: login.php', true, 302);
+	exit();
+}
 
 header('Content-Type: application/json');
 

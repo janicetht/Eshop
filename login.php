@@ -29,9 +29,9 @@
 			<input type="submit" value="Submit">
 		</form>
 		</br></br>
-		<form action="admin-process.php?action=guest_login">
+		<form method="POST" action="auth-process.php?action=guest_login">
 			<label for="guest">No account? Sign in as guest!</label><br>
-			<input type="button" value="Guest">
+			<input type="submit" value="Guest">
 		</form>
 	</div>
 	</div>

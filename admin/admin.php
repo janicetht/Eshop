@@ -3,6 +3,7 @@ ini_set('display_errors',1);
 
 include_once 'auth.php';
 
+
 require __DIR__ . '/lib/db.inc.php';
 $catRes = ierg4210_cat_fetchall();
 $prodRes = ierg4210_prod_fetchall();
@@ -22,9 +23,14 @@ foreach ($prodRes as $value) {
 <header>
 	<title>Admin Page</title>
 	<link rel="stylesheet" href="admin_style.css">
-    <h3> Admin Page </h3>
 </header>
-
+<body>
+    <h3> Admin Page </h3>
+	<div class="logout_button">
+		<form method="POST" action="admin-process.php?action=logout">
+			<input type="submit" value="Logout">
+		</form>
+	</div>
 <fieldset>
     <legend> Category</legend>
     <table>
@@ -250,7 +256,7 @@ foreach ($prodRes as $value) {
 		<input type="submit" value="Submit" />
     </form>
 </fieldset>
-
+</body>
 
 </html>
 
