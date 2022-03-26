@@ -293,7 +293,6 @@ function ierg4210_add_user()
 	$hash_password = hash_hmac('sha256', $password, $salt);
 	//$hash_default_salt = password_hash($password, PASSWORD_DEFAULT);
 	
-	
 	$sql="INSERT INTO USERS (EMAIL, SALT, PASSWORD, ADMIN) VALUES (?,?,?,?);";
     $q = $db->prepare($sql);
 	$q->bindParam(1, $email, PDO::PARAM_STR);
@@ -314,10 +313,10 @@ function ierg4210_user_login()
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 	
-	//if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6}$/", $email))
-    //    throw new Exception("invalid-email");
-	//if (!preg_match("/^[\w@#$%\^\&\*\-]+$/", $password))
-    //    throw new Exception("invalid-password");
+	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
+        throw new Exception("invalid-email");
+	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
+        throw new Exception("invalid-password");
 	
     $sql="SELECT * FROM USERS WHERE EMAIL = ?;";
     $q = $db->prepare($sql);

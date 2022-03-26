@@ -3,6 +3,11 @@ ini_set('display_errors',1);
 
 include_once 'auth.php';
 
+if($return = call_user_func('auth')) === false)
+{
+	header('Location: login.php', true, 302);
+	exit();
+}
 
 require __DIR__ . '/lib/db.inc.php';
 $catRes = ierg4210_cat_fetchall();
@@ -250,7 +255,7 @@ foreach ($prodRes as $value) {
         <label for="username">Email *</label><br>
 		<input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br>
 		<label for="pwd">Password *</label><br>
-		<input type="password" id="password" name="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
+		<input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
         <label for="admin_flag"> Admin *</label>
         <input id="admin_flag" type="number" name="admin_flag" required="required" title="1 for admin, 0 for normal user"/>
 		<input type="submit" value="Submit" />
