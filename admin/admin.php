@@ -15,12 +15,25 @@ $prodRes = ierg4210_prod_fetchall();
 
 $catOptions = '';
 $prodOptions = '';
+$adminOptions = '';
 
 foreach ($catRes as $value) {
     $catOptions .= '<option value="' . $value['CATID'] . '"> ' . $value['NAME'] . ' </option>';
 }
 foreach ($prodRes as $value) {
     $prodOptions .= '<option value="' . $value['PID'] . '"> ' . $value['NAME'] . ' </option>';
+}
+
+$adminOptions .= '<option value="1">Admin</option><option value="0">Non-admin</option>';
+
+session_start();
+function csrf_getNonce($action)
+{
+	$nonce = mt_rand() . mt_rand();
+	if (!isset($_SESSION['csrf_nonce']))
+		$_SESSION['csrf_nonce'] = array();
+	$_SESSION['csrf_nonce'][$action] = $nonce;
+	return $nonce;
 }
 ?>
 
@@ -32,8 +45,9 @@ foreach ($prodRes as $value) {
 <body>
     <h3> Admin Page </h3>
 	<div class="logout_button">
-		<form method="POST" action="admin-process.php?action=logout">
+		<form method="POST" action="admin-process.php?action=<?php echo ($action = 'logout'); ?>">
 			<input type="submit" value="Logout">
+			<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
 		</form>
 	</div>
 <fieldset>
@@ -90,7 +104,7 @@ foreach ($prodRes as $value) {
 
 <fieldset>
     <legend> Add Product</legend>
-    <form id="prod_insert" method="POST" action="admin-process.php?action=prod_insert" enctype="multipart/form-data">
+    <form id="prod_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_insert'); ?>" enctype="multipart/form-data">
         <label for="prod_catid"> Category *</label>
         <div> <select id="prod_catid" name="catid"><?php echo $catOptions; ?></select></div>
         <label for="prod_name"> Name *</label>
@@ -177,12 +191,13 @@ foreach ($prodRes as $value) {
 
         </br>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Edit Product</legend>
-    <form id="prod_edit" method="POST" action="admin-process.php?action=prod_edit" enctype="multipart/form-data">
+    <form id="prod_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_edit'); ?>" enctype="multipart/form-data">
         <label for="prod_catid"> Product *</label>
         <div> <select id="pid" name="pid"><?php echo $prodOptions; ?></select></div>
         <label for="prod_catid"> New Category *</label>
@@ -208,57 +223,63 @@ foreach ($prodRes as $value) {
 		
         </br>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Delete Product</legend>
-    <form id="prod_delete" method="POST" action="admin-process.php?action=prod_delete" enctype="multipart/form-data">
+    <form id="prod_delete" method="POST" action="admin-process.php?action=<?php echo ($action = 'prod_delete'); ?>" enctype="multipart/form-data">
         <label for="prod_catid"> Product *</label>
         <div> <select id="prod_pid" name="pid"><?php echo $prodOptions; ?></select></div>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Add Category</legend>
-    <form id="cat_insert" method="POST" action="admin-process.php?action=cat_insert" enctype="multipart/form-data">
+    <form id="cat_insert" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_insert'); ?>" enctype="multipart/form-data">
         <label for="cat_name"> Name *</label>
         <div> <input id="cat_name" type="text" name="name" required="required" pattern="^[\w\]+$" /></div>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Edit Category</legend>
-    <form id="cat_edit" method="POST" action="admin-process.php?action=cat_edit" enctype="multipart/form-data">
+    <form id="cat_edit" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_edit'); ?>" enctype="multipart/form-data">
         <label for="pro_catid"> Original Name *</label>
         <div> <select id="prod_catid" name="catid"><?php echo $catOptions; ?></select></div>
         <label for="prod_name"> New Name *</label>
         <div> <input id="prod_name" type="text" name="name" required="required" pattern="^[\w\]+$" /></div>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Delete Category</legend>
-    <form id="cat_delete" method="POST" action="admin-process.php?action=cat_delete" enctype="multipart/form-data">
+    <form id="cat_delete" method="POST" action="admin-process.php?action=<?php echo ($action = 'cat_delete'); ?>" enctype="multipart/form-data">
         <label for="cat_delete"> Category *</label>
         <div> <select id="cat_catid" name="catid"><?php echo $catOptions; ?></select></div>
         <input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </br>
 <fieldset>
     <legend> Add User</legend>
-    <form id="add_user" method="POST" action="admin-process.php?action=add_user" enctype="multipart/form-data">
+    <form id="add_user" method="POST" action="admin-process.php?action=<?php echo ($action = 'add_user'); ?>" enctype="multipart/form-data">
         <label for="username">Email *</label><br>
 		<input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br>
 		<label for="pwd">Password *</label><br>
 		<input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
         <label for="admin_flag"> Admin *</label>
-        <input id="admin_flag" type="number" name="admin_flag" required="required" title="1 for admin, 0 for normal user"/>
+        <select id="admin_flag" name="admin_flag" required="required"><?php echo $adminOptions; ?></select>
 		<input type="submit" value="Submit" />
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 </fieldset>
 </body>

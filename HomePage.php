@@ -25,6 +25,15 @@ foreach ($res as $value){
 
 $cat .= '</ul>';
 
+session_start();
+function csrf_getNonce($action)
+{
+	$nonce = mt_rand() . mt_rand();
+	if (!isset($_SESSION['csrf_nonce']))
+		$_SESSION['csrf_nonce'] = array();
+	$_SESSION['csrf_nonce'][$action] = $nonce;
+	return $nonce;
+}
 ?>
 
 <html>
@@ -39,7 +48,9 @@ $cat .= '</ul>';
 				<li><a href="HomePage.php">Home</a></li>
 				<?php print $navCat;?>
 				<li><a href="#">Profile</a></li>
-				<li><a href="auth-process.php?action=logout">Logout</a></li>
+				<li><form id="logout_form"action="auth-process.php?action=<?php echo ($action = 'logout'); ?>" method="POST">
+				<a href="javascript:;" onclick="document.getElementById('logout_form').submit();">Logout</a>
+				<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/></form></li>
 			</ul>
 		</nav>
 	</div>

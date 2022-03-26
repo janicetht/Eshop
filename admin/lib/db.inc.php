@@ -284,14 +284,13 @@ function ierg4210_add_user()
 	$password = $_POST['password'];
 	$admin_flag = $_POST['admin_flag'];
 	
-	//if (!preg_match('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$', $email))
-    //    throw new Exception("invalid-email");
-	//if (!preg_match('(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}', $password))
-    //    throw new Exception("invalid-password");
+	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
+        throw new Exception("invalid-email");
+	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
+        throw new Exception("invalid-password");
 	
 	$salt = random_int(PHP_INT_MIN ,PHP_INT_MAX);
 	$hash_password = hash_hmac('sha256', $password, $salt);
-	//$hash_default_salt = password_hash($password, PASSWORD_DEFAULT);
 	
 	$sql="INSERT INTO USERS (EMAIL, SALT, PASSWORD, ADMIN) VALUES (?,?,?,?);";
     $q = $db->prepare($sql);
