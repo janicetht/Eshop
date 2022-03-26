@@ -16,9 +16,11 @@ require __DIR__.'/admin/lib/db.inc.php';
 $res = ierg4210_cat_fetchall();
 
 $cat = '<ul>';
+$navCat = '';
 
 foreach ($res as $value){
     $cat .= '<li><a href = "MainPage.php?CATID='.$value["CATID"].'"> '.$value["NAME"].'</a></li>';
+	$navCat .= '<li><a href = "MainPage.php?CATID='.$value["CATID"].'"> '.$value["NAME"].'</a></li>';
 }
 
 $cat .= '</ul>';
@@ -34,9 +36,10 @@ $cat .= '</ul>';
 	<div id="topNavBar">
 		<nav>
 			<ul id="topNavBar">
-				<li><div class="cart"><img src="images/cart.ico"/></div></li>
-	  		<li><a href="HomePage.php"><img id="banner-pic" src="images/logo.png"/></a></li>
-				<li><img id=menuBtn src="images/menu.png"></li>
+				<li><a href="HomePage.php">Home</a></li>
+				<?php print $navCat;?>
+				<li><a href="#">Profile</a></li>
+				<li><a href="auth-process.php?action=logout">Logout</a></li>
 			</ul>
 		</nav>
 	</div>

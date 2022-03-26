@@ -1,3 +1,15 @@
+<?php
+require __DIR__.'/admin/lib/db.inc.php';
+$res = ierg4210_cat_fetchall();
+
+$navCat = '';
+
+foreach ($res as $value){
+	$navCat .= '<li><a href = "MainPage.php?CATID='.$value["CATID"].'"> '.$value["NAME"].'</a></li>';
+}
+
+?>
+
 <html>
 <head>
 	<title>Janice Beauty Online Shop</title>
@@ -8,13 +20,10 @@
 	<div id="topNavBar">
 		<nav>
 			<ul id="topNavBar">
-				<li>
-					<div class="cart">
-						<img src="/admin/lib/images/cart.ico"/>
-					</div>
-				</li>
-	  		<li><a href="HomePage.php"><img id="banner-pic" src="/admin/lib/images/logo.png"/></a></li>
-				<li><img id=menuBtn src="/admin/lib/images/menu.png"></li>
+				<li><a href="HomePage.php">Home</a></li>
+				<?php print $navCat;?>
+				<li><a href="#">Profile</a></li>
+				<li><a href="auth-process.php?action=logout">Logout</a></li>
 			</ul>
 		</nav>
 	</div>
