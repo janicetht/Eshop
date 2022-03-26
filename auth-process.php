@@ -24,6 +24,6 @@ try {
 	error_log($e->getMessage());
 	echo json_encode(array('failed'=>'error-db'));
 } catch(Exception $e) {
-	echo 'while(1);' . json_encode(array('failed' => $e->getMessage()));
+	echo json_encode(array('failed' => $e->getMessage()));
 }
 ?>

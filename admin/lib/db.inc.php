@@ -369,7 +369,7 @@ function ierg4210_logout()
 {
 	session_start();
 	// clear the cookies and session
-	setcookie('s4210', time() - 3600);
+	setcookie('s4210', '', time() - 3600);
 	unset($_SESSION['s4210']);
 	// redirect to login page after logout
 	header('Location: ../login.php', true, 302);

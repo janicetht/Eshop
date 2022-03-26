@@ -1,15 +1,15 @@
 <?php
 ini_set('display_errors',1);
+require __DIR__ . '/lib/db.inc.php';
 
-include_once 'auth.php';
+include_once('auth.php');
 
-if($return = call_user_func('auth')) === false)
+if(($return = call_user_func('auth')) === false)
 {
-	header('Location: login.php', true, 302);
+	header('Location: ../login.php', true, 302);
 	exit();
 }
 
-require __DIR__ . '/lib/db.inc.php';
 $catRes = ierg4210_cat_fetchall();
 $prodRes = ierg4210_prod_fetchall();
 
