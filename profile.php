@@ -1,16 +1,3 @@
-<style>
-.banner-btn ul{
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	width:100%;
-}
-.banner-btn li{
-	display: inline;
-}
-</style>
-
 <?php
 require __DIR__.'/admin/lib/db.inc.php';
 $res = ierg4210_cat_fetchall();
@@ -49,7 +36,7 @@ $em = $_SESSION['s4210']['em'];
 			<ul id="topNavBar">
 				<li><a href="HomePage.php">Home</a></li>
 				<?php print $navCat;?>
-				<li><a href="profile.php">Profile</a></li>
+				<li><a href="#">Profile</a></li>
 				<li><form id="logout_form"action="auth-process.php?action=<?php echo ($action = 'logout'); ?>" method="POST">
 				<a href="javascript:;" onclick="document.getElementById('logout_form').submit();">Logout</a>
 				<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/></form></li>
@@ -57,13 +44,19 @@ $em = $_SESSION['s4210']['em'];
 		</nav>
 	</div>
 <section id="banner">
-	<div class="banner-text">
-		<h1>Janice Beauty Online Shop</h1>
-		<p>Welcome, <?php echo $em;?>!</p>
-		<p>Get your beauty products here!</p>
-		<div class="banner-btn">
-		<?php print $cat;?>
-		</div>
+	<div class="form-container">
+	<div class="form-text">
+    <form id="edit_password" method="POST" action="auth-process.php?action=<?php echo ($action = 'edit_password'); ?>" enctype="multipart/form-data">
+        <label for="username">Email: <?php echo $em?></label><br/><br/>
+		<label for="pwd">Old Password *</label><br>
+		<input type="password" id="old_password" name="old_password" pattern="^[\w@#$%^&*-]+$" ><br/>
+		<label for="pwd">New Password *</label><br>
+		<input type="password" id="new_password" name="new_password" pattern="^[\w@#$%^&*-]+$" ><br/><br/>
+		<input type="submit" value="Submit" />
+		<input type="hidden" name="email" value="<?php echo $em; ?>"/>
+		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
+    </form>
+	</div>
 	</div>
 </section>
 

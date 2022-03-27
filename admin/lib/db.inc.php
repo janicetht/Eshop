@@ -1,3 +1,4 @@
+<html>
 <?php
 ini_set('display_errors',1);
 
@@ -288,6 +289,8 @@ function ierg4210_add_user()
         throw new Exception("invalid-email");
 	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
         throw new Exception("invalid-password");
+	if (!preg_match('/^[\d\]+$/', $admin_flag))
+        throw new Exception("invalid-admin-flag");
 	
 	$salt = random_int(PHP_INT_MIN ,PHP_INT_MAX);
 	$hash_password = hash_hmac('sha256', $password, $salt);
@@ -303,6 +306,55 @@ function ierg4210_add_user()
     echo 'User Added. <br/><a href="javascript:history.back();">Go Back</a>';
 	exit();
 }
+function ierg4210_edit_password()
+{
+	global $db;
+    $db = ierg4210_DB();
+	
+	$old_password = $_POST['old_password'];
+	$new_password = $_POST['new_password'];
+	$email = $_POST['email'];
+	
+	if (!preg_match("/^[\w@#$%^&*-]+$/", $old_password))
+        throw new Exception("invalid-password");
+	if (!preg_match("/^[\w@#$%^&*-]+$/", $new_password))
+        throw new Exception("invalid-password");
+	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
+        throw new Exception("invalid-email");
+	
+	$sql="SELECT * FROM USERS WHERE EMAIL = ?;";
+    $q = $db->prepare($sql);
+	$q->bindParam(1, $email, PDO::PARAM_STR);
+	$q->execute();
+	$res = $q->fetch();
+	$saltedOldPassword = hash_hmac('sha256', $old_password, $res['SALT']);
+	
+	if ($saltedOldPassword == $res['PASSWORD']) 
+	{
+		$salt = random_int(PHP_INT_MIN ,PHP_INT_MAX);
+		$hash_password = hash_hmac('sha256', $new_password, $salt);
+		//header('Content-Type: text/html; charset=utf-8');
+		//echo $hash_password.'<br/>'.$salt.'<br/>'.$res['USERID'];
+		//exit();
+		$sql="UPDATE USERS SET SALT = (?), PASSWORD = (?) WHERE USERID = (?);";
+        $q = $db->prepare($sql);
+		$q->bindParam(1, $salt, PDO::PARAM_INT);
+		$q->bindParam(2, $hash_password, PDO::PARAM_STR);
+		$q->bindParam(3, $res['USERID'], PDO::PARAM_INT);
+		$q->execute(); 
+		session_start();
+		// clear the cookies and session
+		setcookie('s4210', '', time() - 3600);
+		unset($_SESSION['s4210']);
+		// redirect to login page after logout
+		header('Location: ../login.php', true, 302);
+		echo '<script type="text/javascript">alert("Password changed. Please login again.");</script>';
+		exit();
+	}
+	header('Content-Type: text/html; charset=utf-8');
+    echo 'Wrong old password. <br/><a href="javascript:history.back();">Go Back.</a>';
+    exit();
+}
 function ierg4210_user_login() 
 {
 	global $db;
@@ -312,10 +364,10 @@ function ierg4210_user_login()
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 	
-	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
-        throw new Exception("invalid-email");
-	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
-        throw new Exception("invalid-password");
+	if (empty($_POST['email']) || empty($_POST['password'])
+	|| (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
+	|| (!preg_match("/^[\w@#$%^&*-]+$/", $password)))
+        throw new Exception("Invalid Email or Password");
 	
     $sql="SELECT * FROM USERS WHERE EMAIL = ?;";
     $q = $db->prepare($sql);
@@ -374,3 +426,5 @@ function ierg4210_logout()
 	header('Location: ../login.php', true, 302);
 	exit();
 }
+?>
+</html>

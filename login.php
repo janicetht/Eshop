@@ -24,12 +24,12 @@ function csrf_getNonce($action)
 		</nav>
 	</div>
 	<section id="banner">
-	<div class="login-container">
-	<div class="login-text">
+	<div class="form-container">
+	<div class="form-text">
 		<form method="POST" action="auth-process.php?action=<?php echo ($action = 'user_login'); ?>" enctype="multipart/form-data">
-			<label for="username">Email:</label><br>
-			<input type="email" id="email" name="email" pattern="^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$"><br>
-			<label for="pwd">Password:</label><br>
+			<label for="username">Email:</label><br/>
+			<input type="email" id="email" name="email" pattern="^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$"><br/>
+			<label for="pwd">Password:</label><br/>
 			<input type="password" id="password" name="password" pattern="^[\w@#$%^&*-]+$" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br/><br/>
 			<input type="submit" value="Submit">
 			<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>

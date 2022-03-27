@@ -14,7 +14,7 @@ function csrf_verifyNonce($action, $receivedNonce)
 {
 	if (isset($receivedNonce) && $_SESSION['csrf_nonce'][$action] == $receivedNonce) 
 	{
-		if ($_SESSION['authtoken'] == null)
+		//if ($_SESSION['authtoken'] == null)
 			unset($_SESSION['csrf_nonce'][$action]);
 		return true;
 	}
@@ -39,4 +39,5 @@ try {
 } catch(Exception $e) {
 	echo json_encode(array('failed' => $e->getMessage()));
 }
+
 ?>

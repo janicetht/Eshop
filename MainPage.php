@@ -30,7 +30,7 @@ function csrf_getNonce($action)
 			<ul id="topNavBar">
 				<li><a href="HomePage.php">Home</a></li>
 				<?php print $navCat;?>
-				<li><a href="#">Profile</a></li>
+				<li><a href="profile.php">Profile</a></li>
 				<li><form id="logout_form"action="auth-process.php?action=<?php echo ($action = 'logout'); ?>" method="POST">
 				<a href="javascript:;" onclick="document.getElementById('logout_form').submit();">Logout</a>
 				<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/></form></li>
