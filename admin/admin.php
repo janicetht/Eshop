@@ -26,7 +26,7 @@ foreach ($prodRes as $value) {
 
 $adminOptions .= '<option value="1">Admin</option><option value="0">Non-admin</option>';
 
-session_start();
+//session_start();
 function csrf_getNonce($action)
 {
 	$nonce = mt_rand() . mt_rand();
@@ -112,7 +112,7 @@ function csrf_getNonce($action)
         <label for="prod_price"> Price *</label>
         <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$" /></div>
         <label for="prod_desc"> Description *</label>
-        <div> <textarea id="prod_desc" type="text" name="description" required="required" rows="4" cols="40"> </textarea> </div>
+        <div> <textarea id="prod_desc" type="text" name="description" required="required" rows="4" cols="40" pattern="^[\w\.\?\!\,\(\)\+\-\* ]+$"> </textarea> </div>
         <label for="prod_desc"> Country of Origin *</label>
         <div> <input id="prod_country" type="text" name="country" required="required" pattern="^[\w\]+$"/> </div>
         <label for="prod_desc"> Inventory *</label>
@@ -205,9 +205,9 @@ function csrf_getNonce($action)
         <label for="prod_name"> New Name *</label>
         <div> <input id="prod_name" type="text" name="name" required="required" pattern="^[\w\]+$" /></div>
         <label for="prod_price"> New Price *</label>
-        <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$" /></div>
+        <div> <input id="prod_price" type="text" name="price" required="required" pattern="^\d+\.?\d*$"/></div>
         <label for="prod_desc"> New Description *</label>
-        <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40"> </textarea> </div>
+        <div> <textarea id="prod_desc" type="text" name="description" rows="4" cols="40" pattern="^[\w\.\?\!\,\(\)\+\-\* ]+$"> </textarea> </div>
         <label for="prod_desc"> New Country of Origin *</label>
         <div> <input id="prod_country" type="text" name="country" required="required" pattern="^[\w\]+$"/> </div>
         <label for="prod_desc"> New Inventory *</label>

@@ -67,14 +67,14 @@ $em = $_SESSION['s4210']['em'];
 	<section id="banner">
 		<div class="banner-text">
 			<h1>Janice Beauty Online Shop</h1>
-			<p>Welcome, <?php echo $em; ?>!</p>
+			<p>Welcome, <?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true); ?>!</p>
 			<p>Get your beauty products here!</p>
 			<div class="banner-btn">
 				<?php print $cat; ?>
 			</div>
 		</div>
 	</section>
-	<input type="hidden" id="em" value="<?php echo $em; ?>"/>
+	<input type="hidden" id="em" value="<?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true); ?>"/>
 </body>
 
 </html>

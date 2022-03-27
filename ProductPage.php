@@ -67,7 +67,7 @@ $em = $_SESSION['s4210']['em'];
 		<div class="navBar">
 			<br/>
       <a href="HomePage.php">Home</a><a> > </a>
-			<a href="MainPage.php?CATID=<?php print $catid;?>">Main Page</a><a> > Product Detail</a>
+			<a href="MainPage.php?CATID=<?php print urlencode($catid);?>">Main Page</a><a> > Product Detail</a>
 			<div class="shopping-list">Shopping List
 				<span class="shoppingListContent">
 				<span id="cart_details"></span>
@@ -89,30 +89,30 @@ $em = $_SESSION['s4210']['em'];
     </div>
     <div class="product-detail">
 		<div class="product-detail-image">
-			<p><img src="/admin/lib/images/<?php print $pid;?>.jpg"/></p>
+			<p><img src="/admin/lib/images/<?php print htmlspecialchars($pid, ENT_COMPAT,'ISO-8859-1', true);?>.jpg"/></p>
 		</div>
 		
 		<div class="product-detail-description">
-			<p id="title"><?php print $name;?></p>
+			<p id="title"><?php print htmlspecialchars($name, ENT_COMPAT,'ISO-8859-1', true);?></p>
 			<p id="detail-cart-btn-td"></p>
 			</br>
-			<p>Made in <?php print $country;?></p>
+			<p>Made in <?php print htmlspecialchars($country, ENT_COMPAT,'ISO-8859-1', true);?></p>
 			</br>
-			<p>HKD<?php print $price;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inventory:<?php print $inventory;?></p>
+			<p>HKD<?php print htmlspecialchars($price, ENT_COMPAT,'ISO-8859-1', true);?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inventory:<?php print htmlspecialchars($inventory, ENT_COMPAT,'ISO-8859-1', true);?></p>
 			</br>
 			<div class="detail-cart-btn">
-				<input type="button" name="add_to_cart" id="<?php print $pid;?>" class="btn btn-success form-control add_to_cart" value="Add to Cart" />
+				<input type="button" name="add_to_cart" id="<?php print htmlspecialchars($pid, ENT_COMPAT,'ISO-8859-1', true);?>" class="btn btn-success form-control add_to_cart" value="Add to Cart" />
 			</div>
 			</br>
 			<p id="how-to-use">How To Use</p>
 			</br>
-			<p><?php print $desc;?></p>
-			<input type="hidden" name="hidden_quantity" id="quantity<?php print $pid;?>" class="form-control" value="1" />
-			<input type="hidden" name="hidden_name" id="name<?php print $pid;?>" value="<?php print $name;?>" />
-			<input type="hidden" name="hidden_price" id="price<?php print $pid;?>" value="<?php print $price;?>" />
+			<p><?php print htmlspecialchars($desc, ENT_COMPAT,'ISO-8859-1', true);?></p>
+			<input type="hidden" name="hidden_quantity" id="quantity<?php print htmlspecialchars($pid, ENT_COMPAT,'ISO-8859-1', true);?>" class="form-control" value="1" />
+			<input type="hidden" name="hidden_name" id="name<?php print htmlspecialchars($pid, ENT_COMPAT,'ISO-8859-1', true);?>" value="<?php print htmlspecialchars($name, ENT_COMPAT,'ISO-8859-1', true);?>" />
+			<input type="hidden" name="hidden_price" id="price<?php print htmlspecialchars($pid, ENT_COMPAT,'ISO-8859-1', true);?>" value="<?php print htmlspecialchars($price, ENT_COMPAT,'ISO-8859-1', true);?>" />
 		</div>		
     </div>
-	<input type="hidden" id="em" value="<?php echo $em; ?>"/>
+	<input type="hidden" id="em" value="<?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true); ?>"/>
   </section>
 	
 </body>

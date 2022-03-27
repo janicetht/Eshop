@@ -56,11 +56,11 @@ function ierg4210_prod_insert() {
         throw new Exception("invalid-name");
     if (!preg_match('/^[\d\.]+$/', $price))
         throw new Exception("invalid-price");
-    //if (!preg_match('/^[\w\ ]+$/', $desc))
-    //    throw new Exception("invalid-textdesc");
+	if (!preg_match('/^[\w\.\?\!\,\(\)\+\-\* ]+$/', $desc))
+        throw new Exception("invalid-textdesc");
 	if (!preg_match('/^[\w\- ]+$/', $country))
         throw new Exception("invalid-textcoun");
-	if (!preg_match('/^[\d\]+$/', $inventory))
+	if (!preg_match('/^\d*$/', $inventory))
         throw new Exception("invalid-inventory");
 	
     $sql="INSERT INTO PRODUCTS (CATID, NAME, PRICE, DESCRIPTION, COUNTRY, INVENTORY) VALUES (?, ?, ?, ?, ?, ?);";
@@ -220,11 +220,11 @@ function ierg4210_prod_edit()
         throw new Exception("invalid-name");
     if (!preg_match('/^[\d\.]+$/', $price))
         throw new Exception("invalid-price");
-    //if (!preg_match('/^[\w\- ]+$/', $description))
-    //    throw new Exception("invalid-textt");
+    if (!preg_match('/^[\w\.\?\!\,\(\)\+\-\* ]+$/', $desc))
+        throw new Exception("invalid-textt");
 	if (!preg_match('/^[\w\- ]+$/', $country))
         throw new Exception("invalid-textcoun");
-	if (!preg_match('/^[\d\]+$/', $inventory))
+	if (!preg_match('/^\d*$/', $inventory))
         throw new Exception("invalid-inventory");
 
     $sql="UPDATE PRODUCTS SET CATID = (?), NAME = (?), PRICE = (?), DESCRIPTION = (?), COUNTRY = (?), INVENTORY = (?) WHERE PID = (?);";

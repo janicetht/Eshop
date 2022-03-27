@@ -66,7 +66,7 @@ $em = $_SESSION['s4210']['em'];
     <br>
 	<ul id="Product" class="table">
 	</ul>
-	<input type="hidden" id="em" value="<?php echo $em; ?>"/>
+	<input type="hidden" id="em" value="<?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true); ?>"/>
   </section>
   
 </body>

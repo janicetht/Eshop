@@ -47,13 +47,13 @@ $em = $_SESSION['s4210']['em'];
 	<div class="form-container">
 	<div class="form-text">
     <form id="edit_password" method="POST" action="auth-process.php?action=<?php echo ($action = 'edit_password'); ?>" enctype="multipart/form-data">
-        <label for="username">Email: <?php echo $em?></label><br/><br/>
+        <label for="username">Email: <?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true);?></label><br/><br/>
 		<label for="pwd">Old Password *</label><br>
 		<input type="password" id="old_password" name="old_password" pattern="^[\w@#$%^&*-]+$" ><br/>
 		<label for="pwd">New Password *</label><br>
 		<input type="password" id="new_password" name="new_password" pattern="^[\w@#$%^&*-]+$" ><br/><br/>
 		<input type="submit" value="Submit" />
-		<input type="hidden" name="email" value="<?php echo $em; ?>"/>
+		<input type="hidden" name="email" value="<?php echo htmlspecialchars($em, ENT_COMPAT,'ISO-8859-1', true); ?>"/>
 		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
 	</div>
