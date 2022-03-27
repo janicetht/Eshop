@@ -1,4 +1,4 @@
-<html>
+
 <?php
 ini_set('display_errors',1);
 
@@ -285,6 +285,8 @@ function ierg4210_add_user()
 	$password = $_POST['password'];
 	$admin_flag = $_POST['admin_flag'];
 	
+	$sanitized_emal = filter_var($email, FILTER_SANITIZE_EMAIL);
+	
 	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
         throw new Exception("invalid-email");
 	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
@@ -427,4 +429,3 @@ function ierg4210_logout()
 	exit();
 }
 ?>
-</html>
