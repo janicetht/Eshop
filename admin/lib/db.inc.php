@@ -287,11 +287,11 @@ function ierg4210_add_user()
 	
 	$sanitized_emal = filter_var($email, FILTER_SANITIZE_EMAIL);
 	
-	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $email))
+	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $sanitized_emal))
         throw new Exception("invalid-email");
 	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
         throw new Exception("invalid-password");
-	if (!preg_match('/^[\d\]+$/', $admin_flag))
+	if (!preg_match('/^\d*$/', $admin_flag))
         throw new Exception("invalid-admin-flag");
 	
 	$salt = random_int(PHP_INT_MIN ,PHP_INT_MAX);
@@ -299,7 +299,7 @@ function ierg4210_add_user()
 	
 	$sql="INSERT INTO USERS (EMAIL, SALT, PASSWORD, ADMIN) VALUES (?,?,?,?);";
     $q = $db->prepare($sql);
-	$q->bindParam(1, $email, PDO::PARAM_STR);
+	$q->bindParam(1, $sanitized_emal, PDO::PARAM_STR);
 	$q->bindParam(2, $salt, PDO::PARAM_INT);
 	$q->bindParam(3, $hash_password, PDO::PARAM_STR);
 	$q->bindParam(4, $admin_flag, PDO::PARAM_INT);

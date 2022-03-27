@@ -277,7 +277,7 @@ function csrf_getNonce($action)
 		<label for="pwd">Password *</label><br>
 		<input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
         <label for="admin_flag"> Admin *</label>
-        <select id="admin_flag" name="admin_flag" required="required"><?php echo $adminOptions; ?></select>
+        <select id="admin_flag" name="admin_flag" ><?php echo $adminOptions; ?></select>
 		<input type="submit" value="Submit" />
 		<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/>
     </form>
@@ -289,4 +289,4 @@ function csrf_getNonce($action)
 <!-- 
 Reference: the code of the drag and drop file uplaod function is refered to the Youtube video 
 'Simple Drag and Drop File Upload Tutorial - HTML, CSS & JavaScript' 
-URL: https://www.youtube.com/watch?v=Wtrin7C4b7w --!>
+URL: https://www.youtube.com/watch?v=Wtrin7C4b7w !-->
