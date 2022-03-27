@@ -1,6 +1,6 @@
 
 <?php
-ini_set('display_errors',1);
+//ini_set('display_errors',1);
 
 function ierg4210_DB() {
 	// connect to the database
@@ -285,9 +285,9 @@ function ierg4210_add_user()
 	$password = $_POST['password'];
 	$admin_flag = $_POST['admin_flag'];
 	
-	$sanitized_emal = filter_var($email, FILTER_SANITIZE_EMAIL);
+	$sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
 	
-	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $sanitized_emal))
+	if (!preg_match("/^[\w=+\-\/][\w='+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$/", $sanitized_email))
         throw new Exception("invalid-email");
 	if (!preg_match("/^[\w@#$%^&*-]+$/", $password))
         throw new Exception("invalid-password");
@@ -299,7 +299,7 @@ function ierg4210_add_user()
 	
 	$sql="INSERT INTO USERS (EMAIL, SALT, PASSWORD, ADMIN) VALUES (?,?,?,?);";
     $q = $db->prepare($sql);
-	$q->bindParam(1, $sanitized_emal, PDO::PARAM_STR);
+	$q->bindParam(1, $sanitized_email, PDO::PARAM_STR);
 	$q->bindParam(2, $salt, PDO::PARAM_INT);
 	$q->bindParam(3, $hash_password, PDO::PARAM_STR);
 	$q->bindParam(4, $admin_flag, PDO::PARAM_INT);

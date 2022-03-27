@@ -38,6 +38,8 @@ function csrf_getNonce($action)
 	$_SESSION['csrf_nonce'][$action] = $nonce;
 	return $nonce;
 }
+
+$em = $_SESSION['s4210']['em'];
 ?>
 
 <html>
@@ -52,7 +54,9 @@ function csrf_getNonce($action)
 			<ul id="topNavBar">
 				<li><a href="HomePage.php">Home</a></li>
 				<?php print $navCat;?>
-				<li><a href="profile.php">Profile</a></li>
+				<div id="profileBtn">
+					<li><a href="profile.php">Profile</a></li>
+				</div>
 				<li><form id="logout_form"action="auth-process.php?action=<?php echo ($action = 'logout'); ?>" method="POST">
 				<a href="javascript:;" onclick="document.getElementById('logout_form').submit();">Logout</a>
 				<input type="hidden" name="nonce" value="<?php echo csrf_getNonce($action); ?>"/></form></li>
@@ -108,9 +112,19 @@ function csrf_getNonce($action)
 			<input type="hidden" name="hidden_price" id="price<?php print $pid;?>" value="<?php print $price;?>" />
 		</div>		
     </div>
-
+	<input type="hidden" id="em" value="<?php echo $em; ?>"/>
   </section>
-
+	
 </body>
 </html>
+<script>
+	myFunction();
+	function myFunction() {
+		var em = document.getElementById("em").value;
+		var x = document.getElementById("profileBtn");
+		if (em == "guest") {
+			x.style.display = "none";
+		}
+	}
+</script>
 <script src="cart.js"></script>
