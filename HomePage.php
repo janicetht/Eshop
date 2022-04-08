@@ -55,6 +55,7 @@ $em = $_SESSION['s4210']['em'];
 				<div id="profileBtn">
 					<li><a href="profile.php">Profile</a></li>
 				</div>
+				<li><a href="cart.php">Cart</a></li>
 				<li>
 					<form id="logout_form" action="auth-process.php?action=<?php echo ($action = 'logout'); ?>" method="POST">
 						<a href="javascript:;" onclick="document.getElementById('logout_form').submit();">Logout</a>

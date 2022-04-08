@@ -7,7 +7,7 @@ session_start();
 
 $total_price = 0;
 $total_item = 0;
-
+$item_num = 1;
 $output = '
 <div class="table-responsive" id="order_table">
 	<table class="table table-bordered table-striped">
@@ -29,11 +29,15 @@ if(!empty($_SESSION["shopping_cart"]))
 			<td><input type="number" id="input_quantity'.$values["pid"].'" onchange="quantityChange('.$values["pid"].')" type="text" value="'.$values["quantity"].'"/></td>
 			<td align="right">$ '.$values["price"].'</td>
 			<td align="right">$ '.number_format($values["quantity"] * $values["price"], 2).'</td>
-			<td><button name="delete" class="btn btn-danger btn-xs delete" id="'. $values["pid"].'">Remove</button></td>
+			<td><button type="button" name="delete" class="btn btn-danger btn-xs delete" id="'. $values["pid"].'">Remove</button></td>
+			<input type="hidden" name="item_name_'.$item_num.'" value="'.$values["name"].'" />
+			<input type="hidden" name="amount_'.$item_num.'" value="'.$values["price"].'" />
+			<input type="hidden" name="quantity_'.$item_num.'" value="'.$values["quantity"].'" />
 		</tr>
 		';
 		$total_price = $total_price + ($values["quantity"] * $values["price"]);
 		$total_item = $total_item + 1;
+		$item_num = $item_num + 1;
 	}
 	$output .= '
 	<tr>  
@@ -54,6 +58,13 @@ else
     ';
 }
 $output .= '</table></div>';
+$output .= '<input type="hidden" name="cmd" value="_cart" />
+<input type="hidden" name="upload" value="1" />
+<input type="hidden" name="business" value="sb-u3u9b15570565@business.example.com" />
+<input type="hidden" name="currency_code" value="HKD" />
+<input type="hidden" name="charset" value="utf-8" />
+<input type="hidden" name="custom" value="0" />
+<input type="hidden" name="invoice" value="0" />';
 $data = array(
 	'cart_details'		=>	$output,
 	'total_price'		=>	'$' . number_format($total_price, 2),
