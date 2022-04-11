@@ -1,5 +1,6 @@
 <?php
 require('functions.php');
+require __DIR__ . '/lib/db.inc.php';
 
 // For test payments we want to enable the sandbox mode. If you want to put live
 // payments through then this setting needs changing to `false`.
@@ -12,14 +13,16 @@ $enableSandbox = true;
     'password' => 'secret',
     'name' => 'example_database'
 ];*/
+global $db;
+$db = ierg4210_DB();
 
 // PayPal settings. Change these to your account details and the relevant URLs
 // for your site.
 $paypalConfig = [
-    //'email' => 'user@example.com',
-    'return_url' => 'http://52.44.90.51/payment-success.html',
-    'cancel_url' => 'http://52.44.90.51/payment-cancelled.html',
-    'notify_url' => 'http://52.44.90.51/payments.php'
+    'email' => 'sb-u3u9b15570565@business.example.com',
+    'return_url' => 'payment-success.html',
+    'cancel_url' => 'payment-cancelled.html',
+    'notify_url' => 'payments.php'
 ];
 
 $paypalUrl = $enableSandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
@@ -36,7 +39,7 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     }
 
     // Set the PayPal account.
-    //$data['business'] = $paypalConfig['email'];
+    $data['business'] = $paypalConfig['email'];
 
     // Set the PayPal return addresses.
     $data['return'] = stripslashes($paypalConfig['return_url']);
@@ -44,9 +47,9 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     $data['notify_url'] = stripslashes($paypalConfig['notify_url']);
 
     // Set the details about the product being purchased, including the amount and currency so that these aren't overridden by the form data.
-    //$data['item_name'] = $itemName;
-    //$data['amount'] = $itemAmount;
-    //$data['currency_code'] = 'GBP';
+    $data['item_name'] = $itemName;
+    $data['amount'] = $itemAmount;
+    $data['currency_code'] = 'GBP';
 
     // Add any custom fields for the query string.
     //$data['custom'] = USERID;
@@ -66,7 +69,7 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
 
     // Assign posted variables to local data array.
     $data = [
-        'item_name_1' => $_POST['item_name_1'],
+        'item_name_1' => $_POST['item_name_1'],         // need to change this 4 lines to loop
         'quantity_1' => $_POST['quantity_1'],
         'item_name_2' => $_POST['item_name_2'],
         'quantity_2' => $_POST['quantity_2'],
