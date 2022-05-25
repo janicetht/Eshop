@@ -58,7 +58,7 @@ An e-commerce website built with html, css, php, java script and sqlite.
 
 ## Setup
 
-Visit the link for demo: https://secure.s48.ierg4210.ie.cuhk.edu.hk/login.php
+Visit the link for demo: https://secure.s48.ierg4210.ie.cuhk.edu.hk
 
 ## Status
 
