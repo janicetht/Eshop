@@ -37,7 +37,7 @@ An e-commerce website built with html, css, php, java script and sqlite.
 	- Not available when logged in with Guest
 
 - Top Navigation bar
-	- Navigate to different pages, ie. Home, All Categaries, Profile, Logout button
+	- Navigate to different pages, ie. Home, All Categaries, Profile, Cart, Logout button
 
 - Navigation bar 
 	- Navigation bar at the top left corner to navigate to the upper level of the hierarchy, eg. *Home > Main Page*
@@ -46,11 +46,12 @@ An e-commerce website built with html, css, php, java script and sqlite.
 - Shopping Cart
 	- Shopping list at the top right corner using the CSS *hover* design. 
 	- There are input boxes for each product to input the quantity. Change of input will update the cart immediately. 
-	- Remove button for each product.
-	- Total price is calculated and shown.
-	- Click **Clear** button to empty the cart.
-	- **Check Out** button for submitting the list to paypal but currently no function.
+	- Remove button for each product
+	- Total price is calculated and shown
+	- Click **Clear** button to empty the cart
+	- **Check Out** button for submitting the list to paypal
 	- Available in Main Page and Product Page
+	- A separate page (cart.php) for a clearer view of the shopping cart list
 
 - Admin Panel (admin.php)
 	- To manage database 
