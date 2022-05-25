@@ -12,6 +12,7 @@ if(($return = call_user_func('auth')) === false)
 
 $catRes = ierg4210_cat_fetchall();
 $prodRes = ierg4210_prod_fetchall();
+$orderRes = ierg4210_orders_fetchall();
 
 $catOptions = '';
 $prodOptions = '';
@@ -94,6 +95,34 @@ function csrf_getNonce($action)
                 print "<td>" . $value['COUNTRY'] . "</td>";
                 print "<td>" . $value['INVENTORY'] . "</td>";
                 print "<td><img src='/admin/lib/images/" . $value['PID'] . ".jpg'/></td>";
+                print "</tr>";
+            }
+            ?>
+        </tr>
+    </table>
+</fieldset>
+</br>
+
+<fieldset>
+    <legend> Orders</legend>
+    <table>
+        <tr>
+            <th>ID </th>
+            <th>User </th>
+            <th>Payment Status </th>
+            <th>Payment Amount </th>
+            <th>Products </th>
+            <th>Create Datetime </th>
+        <tr>
+            <?php
+            foreach ($orderRes as $value) {
+                print '<tr>';
+                print "<td>" . $value['ID'] . "</td>";
+                print "<td>" . $value['USER'] . "</td>";
+                print "<td>" . $value['PAYMENT_STATUS'] . "</td>";
+                print "<td>" . $value['PAYMENT_AMOUNT'] . "</td>";
+                print "<td>" . $value['PRODUCTS'] . "</td>";
+                print "<td>" . $value['CREATEDATETIME'] . "</td>";
                 print "</tr>";
             }
             ?>

@@ -1,41 +1,60 @@
 <?php
+ini_set('display_errors', 1);
+require __DIR__ . '/admin/lib/db.inc.php';
 
-function checkTxnid($txnid) {
+function checkTxnid($db, $txnid)
+{
+    $stmt = $db->prepare('SELECT * FROM ORDERS WHERE txnid = (?);');
+    $stmt->bindParam(1, $txnid);
+    $stmt->execute();
 
-    global $db;
-
-    $txnid = $db->real_escape_string($txnid);
-    $results = $db->query('SELECT * FROM `payments` WHERE txnid = \'' . $txnid . '\'');
-
-    return ! $results->num_rows;
+    return !$stmt->rowCount();
 }
 
-function addPayment($data) {
+function addPayment($db, $data)
+{
     //TO BE IMPLEMENTED - adding payment record into db
     //Sample code from the reference
 
-    global $db;
+    $data['payment_status'] = 'success';
 
     if (is_array($data)) {
-        $stmt = $db->prepare('INSERT INTO `payments` (txnid, payment_amount, payment_status, itemid, createdtime) VALUES(?, ?, ?, ?, ?)');
-        $stmt->bind_param(
-            'sdsss',
-            $data['txn_id'],
-            $data['payment_amount'],
-            $data['payment_status'],
-            $data['item_number'],
-            date('Y-m-d H:i:s')
-        );
+        $date = date('Y-m-d H:i:s');
+        $stmt = $db->prepare('UPDATE ORDERS SET txnid = (?), PAYMENT_STATUS = (?), CREATEDATETIME = (?) WHERE INVOICE = (?);');
+        $stmt->bindParam(1, $data['txn_id']);
+        $stmt->bindParam(2, $data['payment_status']);
+        $stmt->bindParam(3, $date);
+        $stmt->bindParam(4, $data['invoice']);
         $stmt->execute();
-        $stmt->close();
-
-        return $db->insert_id;
+        return 1;//$db->lastInsertId;
     }
 
     return false;
 }
 
-function verifyTransaction($data) {
+function failPayment($db, $data)
+{
+    //TO BE IMPLEMENTED - adding payment record into db
+    //Sample code from the reference
+
+    $data['payment_status'] = 'fail';
+
+    if (is_array($data)) {
+        $date = date('Y-m-d H:i:s');
+        $stmt = $db->prepare('UPDATE ORDERS SET txnid = (?), PAYMENT_STATUS = (?), CREATEDATETIME = (?) WHERE INVOICE = (?);');
+        $stmt->bindParam(1, $data['txn_id']);
+        $stmt->bindParam(2, $data['payment_status']);
+        $stmt->bindParam(3, $date);
+        $stmt->bindParam(4, $data['invoice']);
+        $stmt->execute();
+        return 1;//$db->lastInsertId;
+    }
+
+    return false;
+}
+
+function verifyTransaction($data)
+{
     global $paypalUrl;
 
     $req = 'cmd=_notify-validate';
@@ -77,5 +96,3 @@ function verifyTransaction($data) {
 
     return $res === 'VERIFIED';
 }
-
-?>

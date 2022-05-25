@@ -1,6 +1,6 @@
 <?php
+ini_set('display_errors', 1);
 require('functions.php');
-require __DIR__ . '/lib/db.inc.php';
 
 // For test payments we want to enable the sandbox mode. If you want to put live
 // payments through then this setting needs changing to `false`.
@@ -15,21 +15,27 @@ $enableSandbox = true;
 ];*/
 global $db;
 $db = ierg4210_DB();
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 // PayPal settings. Change these to your account details and the relevant URLs
 // for your site.
 $paypalConfig = [
     'email' => 'sb-u3u9b15570565@business.example.com',
-    'return_url' => 'payment-success.html',
-    'cancel_url' => 'payment-cancelled.html',
-    'notify_url' => 'payments.php'
+    'return_url' => 'https://secure.s48.ierg4210.ie.cuhk.edu.hk/payment-success.php',
+    'cancel_url' => 'https://secure.s48.ierg4210.ie.cuhk.edu.hk/payment-cancelled.php',
+    'notify_url' => 'https://secure.s48.ierg4210.ie.cuhk.edu.hk/payments.php'
 ];
 
 $paypalUrl = $enableSandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 
 // Check if paypal request or response
 if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
-
+    $stmt = $db->prepare('INSERT INTO LOG (ERROR, TIME) VALUES (?,?)');
+    $text = "if";
+    $stmt->bindParam(1, $text);
+    $stmt->bindParam(2, $date);
+    $stmt->execute();
     // Grab the post data so that we can set up the query string for PayPal.
     // Ideally we'd use a whitelist here to check nothing is being injected into
     // our post data.
@@ -39,7 +45,7 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     }
 
     // Set the PayPal account.
-    $data['business'] = $paypalConfig['email'];
+    //$data['business'] = $paypalConfig['email'];
 
     // Set the PayPal return addresses.
     $data['return'] = stripslashes($paypalConfig['return_url']);
@@ -47,9 +53,9 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     $data['notify_url'] = stripslashes($paypalConfig['notify_url']);
 
     // Set the details about the product being purchased, including the amount and currency so that these aren't overridden by the form data.
-    $data['item_name'] = $itemName;
-    $data['amount'] = $itemAmount;
-    $data['currency_code'] = 'GBP';
+    //$data['item_name'] = $itemName;
+    //$data['amount'] = $itemAmount;
+    //$data['currency_code'] = 'GBP';
 
     // Add any custom fields for the query string.
     //$data['custom'] = USERID;
@@ -58,6 +64,7 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     $queryString = http_build_query($data);
 
     // Redirect to paypal IPN
+
     header('location:' . $paypalUrl . '?' . $queryString);
     exit();
 
@@ -68,28 +75,35 @@ if (!isset($_POST["txn_id"]) && !isset($_POST["txn_type"])) {
     //$db = new mysqli($dbConfig['host'], $dbConfig['username'], $dbConfig['password'], $dbConfig['name']);
 
     // Assign posted variables to local data array.
+
     $data = [
-        'item_name_1' => $_POST['item_name_1'],         // need to change this 4 lines to loop
-        'quantity_1' => $_POST['quantity_1'],
-        'item_name_2' => $_POST['item_name_2'],
-        'quantity_2' => $_POST['quantity_2'],
         'payment_status' => $_POST['payment_status'],
         'payment_amount' => $_POST['mc_gross'],
         'payment_currency' => $_POST['mc_currency'],
         'txn_id' => $_POST['txn_id'],
         'receiver_email' => $_POST['receiver_email'],
         'custom' => $_POST['custom'],
+        'invoice' => $_POST['invoice']
     ];
+    for ($i = 1; $i < (int)$_POST["total_item"] + 1; $i++) {
+        $data["item_name_" . $i] = $_POST["item_name_" . $i];
+        $data["quantity_" . $i] = $_POST["quantity_" . $i];
+    }
 
     // We need to verify the transaction comes from PayPal and check we've not
     // already processed the transaction before adding the payment to our
     // database.
-    if (verifyTransaction($_POST) && checkTxnid($data['txn_id'])) {
-        if (addPayment($data) !== false) {
+    $flag1 = verifyTransaction($_POST);
+    $flag2 = checkTxnid($db, $data['txn_id']);
+
+    if ($flag1 && $flag2) {
+        if (addPayment($db, $data) !== false) {
             // Payment successfully added into db.
         }
-    }else{
+    } else {
         //Payment failed
+        if (failPayment($db, $data) !== false) {
+            // Payment successfully set to fail into db.
+        }
     }
 }
-?>

@@ -70,17 +70,14 @@ $em = $_SESSION['s4210']['em'];
       <a href="HomePage.php">Home</a><a> > </a>
 			<a href="MainPage.php?CATID=<?php print urlencode($catid);?>">Main Page</a><a> > Product Detail</a>
 			<div class="shopping-list">Shopping List
-			<form action="payments.php" method="post" id="form1">
+			<form action="javascript:void(0);" id="checkout-form" onsubmit="submitFormData(this)">
+				<input type="hidden" id="em" name="em" value="<?php echo htmlspecialchars($em, ENT_COMPAT, 'ISO-8859-1', true); ?>" />
 				<span class="shoppingListContent">
 				<span id="cart_details"></span>
 				<div id="cart_btn">
-					<div id="paypal-button-container">
-				    <div id="check_out_cart_btn">
-					<a href="#" class="btn btn-primary" id="check_out_cart">
-					<span class="glyphicon glyphicon-shopping-cart"></span> Check out
-					</a>
-					</div>
-					</div>
+					<div id="check_out_cart_btn">
+                        <input type="submit" class="btn btn-success" id="check_out_cart" form="checkout-form" value="Checkout">
+                    </div>
 					<div id="clear_cart_btn">
 					<a href="#" class="btn btn-default" id="clear_cart">
 					<span class="glyphicon glyphicon-trash"></span> Clear
@@ -121,7 +118,7 @@ $em = $_SESSION['s4210']['em'];
 	
 </body>
 </html>
-<script src="https://www.paypal.com/sdk/js?client-id=AXOWYIvAUgTpPw7ADHRgNH7mqZ0n7837moB8exERpHvR3iOXOw2HL16SHMfhAHpEgOaA3VbzB7ou6WdP&currency=HKD"></script>
+<script src="payment.js"></script>
 <script>
 	myFunction();
 	function myFunction() {

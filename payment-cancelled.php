@@ -12,7 +12,7 @@
         background: #EBF0F5;
       }
         h1 {
-          color: #88B04B;
+          color: #b04b4b;
           font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
           font-weight: 900;
           font-size: 40px;
@@ -25,7 +25,7 @@
           margin: 0;
         }
       i {
-        color: #9ABC66;
+        color: #bc6666;
         font-size: 100px;
         line-height: 200px;
         margin-left:-15px;
@@ -41,36 +41,13 @@
     </style>
     <body>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><span class="sr-only"></span>Demo Shopping Site</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Cart</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Login</a>
-                </li>
-                </ul>
-            </div>
-        </nav>
-
-
       <div class="card">
       <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
+        <i class="checkmark">✘</i>
       </div>
-        <h1>Success</h1> 
-        <p>We received your purchase request;<br/> we'll be in touch shortly!</p>
+        <h1>Failed</h1> 
+        <p>Payment Failed<br/> Please try again or contact us</p>
+        <?php echo '<a href="HomePage.php">Continue Shopping</a>'; ?>
       </div>
     </body>
 </html>

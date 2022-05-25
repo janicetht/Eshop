@@ -63,6 +63,7 @@ $output .= '<input type="hidden" name="cmd" value="_cart" />
 <input type="hidden" name="business" value="sb-u3u9b15570565@business.example.com" />
 <input type="hidden" name="currency_code" value="HKD" />
 <input type="hidden" name="charset" value="utf-8" />
+<input type="hidden" name="total_item" value='.$total_item.' />
 <input type="hidden" name="custom" value="0" />
 <input type="hidden" name="invoice" value="0" />';
 $data = array(
